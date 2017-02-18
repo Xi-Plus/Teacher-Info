@@ -48,9 +48,10 @@ if ($step == 0) {
 	}
 } else if ($step == 2) {
 	$hash = md5(uniqid(rand(),true));
-	$sth = $G["db"]->prepare("INSERT INTO `school_data` (`id`, `teacher_count`, `hash`) VALUES (:id, :teacher_count, :hash);");
+	$sth = $G["db"]->prepare("INSERT INTO `school_data` (`id`, `teacher_count`, `year`, `hash`) VALUES (:id, :teacher_count, :year, :hash);");
 	$sth->bindValue(":id", $schoolid);
 	$sth->bindValue(":teacher_count", json_encode($_POST["teachercnt"]));
+	$sth->bindValue(":year", $_POST["schoolyear"]);
 	$sth->bindValue(":hash", $hash);
 	$sth->execute();
 	$step++;
@@ -84,7 +85,7 @@ function filter(){
 		<div class="row">
 			<label class="col-sm-3 col-md-2 form-control-label"><i class="fa fa-bookmark itemicon" aria-hidden="true"></i> 學校名稱</label>
 			<div class="col-sm-9 col-md-10">
-				<input type="text" class="form-control" id="filter_name" oninput="filter()" placeholder="快速篩選">
+				<input type="text" class="form-control" id="filter_name" oninput="filter()" placeholder="輸入文字以篩選">
 				<select name="schoolid" id="schoolid" class="form-control" required>
 					<option hidden value="">請選取</option>
 					<?php
@@ -125,7 +126,7 @@ function filter(){
 			</label>
 		</div>
 		<div class="row">
-			<label class="col-sm-3 col-md-2 form-control-label"><i class="fa fa-calendar filtericon" aria-hidden="true"></i> 學年度</label>
+			<label class="col-sm-3 col-md-2 form-control-label"><i class="fa fa-calendar" aria-hidden="true"></i> 學年度</label>
 			<div class="col-sm-9 col-md-10 form-inline">
 				<input type="number" class="form-control" name="schoolyear" value="<?=$G["schoolyear"]?>">
 			</div>
