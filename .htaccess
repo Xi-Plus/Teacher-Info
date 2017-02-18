@@ -2,3 +2,4 @@ RewriteEngine On
 RewriteBase /teacherinfo/
 
 RewriteRule ^school/?$ school.php [PT,L]
+RewriteRule ^teacher/?$ teacher.php [PT,L]
