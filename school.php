@@ -55,6 +55,12 @@ if ($step == 0) {
 	$sth->bindValue(":hash", $hash);
 	$sth->execute();
 	$step++;
+	?>
+	<div class="alert alert-success alert-dismissible" role="alert">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		已收到資料
+	</div>
+	<?php
 }
 ?>
 <script type="text/javascript">
@@ -156,10 +162,6 @@ function filter(){
 		</div>
 	</form>
 	<?php
-	} else if ($step == 3) {
-		?>
-		已收到資料
-		<?php
 	}
 	?>
 </div>
