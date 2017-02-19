@@ -37,6 +37,19 @@ if ($step == 0) {
 		</div>
 		<?php
 	} else {
+		$sth = $G["db"]->prepare("SELECT *  FROM `teacher_data` WHERE `school_id` = :school_id AND `name` = :name ORDER BY `updatetime` DESC LIMIT 1");
+		$sth->bindValue(":school_id", $schoolid);
+		$sth->bindValue(":name", $_POST["teachername"]);
+		$sth->execute();
+		$old = $sth->fetch(PDO::FETCH_ASSOC);
+		if ($old !== false) {
+			?>
+			<div class="alert alert-info alert-dismissible" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				發現舊資料，可以選擇不修改
+			</div>
+			<?php
+		}
 		$step++;
 	}
 } else if ($step == 2) {
@@ -48,6 +61,34 @@ if ($step == 0) {
 			$phone .= "#".$_POST["phone3"];
 		}
 	}
+	$sth = $G["db"]->prepare("SELECT *  FROM `teacher_data` WHERE `school_id` = :school_id AND `name` = :name ORDER BY `updatetime` DESC LIMIT 1");
+	$sth->bindValue(":school_id", $schoolid);
+	$sth->bindValue(":name", $_POST["teachername"]);
+	$sth->execute();
+	$old = $sth->fetch(PDO::FETCH_ASSOC);
+	$useoldlist = array();
+	if ($_POST["teachertype"] == "useold") {
+		$_POST["teachertype"] = $old["teacher_type"];
+		$useoldlist[]= "教師類別";
+	}
+	if (isset($_POST["old_phone"])) {
+		$phone = $old["phone"];
+		$useoldlist[]= "電話";
+	}
+	if (isset($_POST["old_mobile"])) {
+		$_POST["mobile"] = $old["mobile"];
+		$useoldlist[]= "手機";
+	}
+	if (isset($_POST["old_email"])) {
+		$_POST["email"] = $old["email"];
+		$useoldlist[]= "Email";
+	}
+	if (isset($_POST["old_emailtype"])) {
+		$_POST["emailtype"] = $old["email_type"];
+		$useoldlist[]= "電子報";
+	} else {
+		$_POST["emailtype"] = json_encode($_POST["emailtype"] ?? array());
+	}
 	$sth = $G["db"]->prepare("INSERT INTO `teacher_data` (`school_id`, `name`, `teacher_type`, `phone`, `mobile`, `email`, `email_type`, `year`, `hash`) VALUES (:school_id, :name, :teacher_type, :phone, :mobile, :email, :email_type, :year, :hash)");
 	$sth->bindValue(":school_id", $_POST["schoolid"]);
 	$sth->bindValue(":name", $_POST["teachername"]);
@@ -55,11 +96,25 @@ if ($step == 0) {
 	$sth->bindValue(":phone", $phone);
 	$sth->bindValue(":mobile", $_POST["mobile"]);
 	$sth->bindValue(":email", $_POST["email"]);
-	$sth->bindValue(":email_type", json_encode($_POST["emailtype"] ?? array()));
+	$sth->bindValue(":email_type", $_POST["emailtype"]);
 	$sth->bindValue(":year", $_POST["schoolyear"]);
 	$sth->bindValue(":hash", $hash);
 	$sth->execute();
 	$step++;
+	?>
+	<div class="alert alert-success alert-dismissible" role="alert">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		已收到資料
+	</div>
+	<?php
+	if (count($useoldlist)) {
+		?>
+		<div class="alert alert-info alert-dismissible" role="alert">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			以下不修改：<?=implode("、", $useoldlist)?>
+		</div>
+		<?php
+	}
 }
 ?>
 <div class="container">
@@ -122,14 +177,21 @@ if ($step == 0) {
 		<div class="row">
 			<label class="col-sm-3 col-md-2 form-control-label"><i class="fa fa-calendar" aria-hidden="true"></i> 學年度</label>
 			<div class="col-sm-9 col-md-10 form-inline">
-				<input type="number" class="form-control" name="schoolyear" value="<?=$G["schoolyear"]?>">
+				<input type="number" class="form-control" name="schoolyear" value="<?=$G["schoolyear"]?>" required>
 			</div>
 		</div>
 		<div class="row">
 			<label class="col-sm-3 col-md-2 form-control-label" for="schoolid2"><i class="fa fa-user itemicon" aria-hidden="true"></i> 教師類別</label>
 			<div class="col-sm-9 col-md-10 form-inline">
-				<select name="teachertype" class="form-control" required>
+				<select name="teachertype" id="teachertype" class="form-control" required>
 					<option hidden value="">請選取</option>
+					<?php
+					if ($old) {
+						?>
+						<option value="useold" selected>不修改</option>
+						<?php
+					}
+					?>
 					<?php
 					require("func/teachertype.php");
 					foreach ($D['teachertype'] as $id => $teachertype) {
@@ -144,32 +206,72 @@ if ($step == 0) {
 		<div class="row">
 			<label class="col-sm-3 col-md-2 form-control-label"><i class="fa fa-header itemicon" aria-hidden="true"></i> 電話</label>
 			<div class="col-sm-9 col-md-10 form-inline">
-				<input type="text" class="form-control" name="phone1" size="3" maxlength="3" placeholder="區碼" autocomplete="off">-
-				<input type="text" class="form-control" name="phone2" size="8" maxlength="8" placeholder="號碼" autocomplete="off">#
-				<input type="text" class="form-control" name="phone3" size="3" maxlength="3" placeholder="分機" autocomplete="off">
+				<?php
+				if ($old) {
+					?>
+					<label>
+						<input type="checkbox" name="old_phone" checked> 
+						不修改 
+					</label>
+					<?php
+				}
+				?>
+				<input type="text" class="form-control" name="phone1" id="phone1" size="3" maxlength="3" placeholder="區碼" autocomplete="off">-
+				<input type="text" class="form-control" name="phone2" id="phone2" size="8" maxlength="8" placeholder="號碼" autocomplete="off">#
+				<input type="text" class="form-control" name="phone3" id="phone3" size="3" maxlength="3" placeholder="分機" autocomplete="off">
 			</div>
 		</div>
 		<div class="row">
 			<label class="col-sm-3 col-md-2 form-control-label"><i class="fa fa-header itemicon" aria-hidden="true"></i> 手機</label>
 			<div class="col-sm-9 col-md-10 form-inline">
-				<input type="text" class="form-control" name="mobile" size="15" maxlength="15" placeholder="手機" autocomplete="tel">
+				<?php
+				if ($old) {
+					?>
+					<label>
+						<input type="checkbox" name="old_mobile" checked> 
+						不修改 
+					</label>
+					<?php
+				}
+				?>
+				<input type="text" class="form-control" name="mobile" id="mobile" size="15" maxlength="15" placeholder="手機" autocomplete="tel">
 			</div>
 		</div>
 		<div class="row">
 			<label class="col-sm-3 col-md-2 form-control-label"><i class="fa fa-header itemicon" aria-hidden="true"></i> Email</label>
 			<div class="col-sm-9 col-md-10">
-				<input type="email" class="form-control" name="email" autocomplete="email">
+				<?php
+				if ($old) {
+					?>
+					<label>
+						<input type="checkbox" name="old_email" checked> 
+						不修改 
+					</label>
+					<?php
+				}
+				?>
+				<input type="email" class="form-control" id="email" name="email" autocomplete="email">
 			</div>
 		</div>
 		<div class="row">
 			<label class="col-sm-3 col-md-2 form-control-label"><i class="fa fa-header itemicon" aria-hidden="true"></i> 電子報</label>
 			<div class="col-sm-9 col-md-10">
+				<?php
+				if ($old) {
+					?>
+					<label>
+						<input type="checkbox" name="old_emailtype" checked> 
+						不修改 
+					</label>
+					<?php
+				}
+				?>
 				<div class="checkbox">
 					<?php
 					require("func/emailtype.php");
 					foreach ($D['emailtype'] as $id => $emailtype) {
 						?><label class="checkbox-inline"">
-							<input type="checkbox" name="emailtype[]" value="<?=$id?>" checked><?=htmlentities($emailtype["name"])?>
+							<input type="checkbox" name="emailtype[]" id="emailtype" value="<?=$id?>" checked><?=htmlentities($emailtype["name"])?>
 						</label> <?php
 					}
 					?>
@@ -183,10 +285,6 @@ if ($step == 0) {
 		</div>
 	</form>
 	<?php
-	} else if ($step == 3) {
-		?>
-		已收到資料
-		<?php
 	}
 	?>
 </div>
