@@ -29,6 +29,7 @@ require("header.php");
 if ($step == 0) {
 	$step ++;
 } else if ($step == 1) {
+	$_POST["schoolid2"] = strtoupper($_POST["schoolid2"]);
 	if ($school === false) {
 		?>
 		<div class="alert alert-danger alert-dismissible" role="alert">
