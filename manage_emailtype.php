@@ -90,7 +90,7 @@ require("func/emailtype.php");
 			<label class="col-sm-2 form-control-label"><i class="fa fa-header itemicon" aria-hidden="true"></i> 電子報類別</label>
 			<div class="col-sm-10">
 				<select class="form-control" name="emailtype" required>
-					<option value="">請選取</option>
+					<option value="" hidden>請選取</option>
 					<option value="new">+ 新增電子報類別</option>
 					<?php
 					foreach ($D['emailtypeall'] as $id => $type) {

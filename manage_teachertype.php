@@ -90,7 +90,7 @@ require("func/teachertype.php");
 			<label class="col-sm-2 form-control-label"><i class="fa fa-header itemicon" aria-hidden="true"></i> 教師類別</label>
 			<div class="col-sm-10">
 				<select class="form-control" name="teachertype" required>
-					<option value="">請選取</option>
+					<option value="" hidden>請選取</option>
 					<option value="new">+ 新增教師類別</option>
 					<?php
 					foreach ($D['teachertypeall'] as $id => $type) {
