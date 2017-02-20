@@ -3,3 +3,6 @@ RewriteBase /teacherinfo/
 
 RewriteRule ^school/?$ school.php [PT,L]
 RewriteRule ^teacher/?$ teacher.php [PT,L]
+RewriteRule ^export/school/?$ export_school.php [PT,L]
+RewriteRule ^manage/teachertype/?$ manage_teachertype.php [PT,L]
+RewriteRule ^manage/emailtype/?$ manage_emailtype.php [PT,L]
