@@ -19,6 +19,7 @@
 				<a class="nav-link dropdown-toggle" href="#" id="manage" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="fa fa-pencil" aria-hidden="true"></i> 匯出</a>
 				<div class="dropdown-menu" aria-labelledby="manage">
 					<a class="dropdown-item" href="<?=$C["path"]?>/export/school/"><i class="fa fa-graduation-cap" aria-hidden="true"></i> 學校</a>
+					<a class="dropdown-item" href="<?=$C["path"]?>/export/teacher/"><i class="fa fa-user" aria-hidden="true"></i> 教師</a>
 				</div>
 			</li>
 			<li class="nav-item dropdown">
