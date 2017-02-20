@@ -6,9 +6,9 @@ $row = $sth->fetchAll(PDO::FETCH_ASSOC);
 $D['emailtype'] = array();
 $D['emailtypeall'] = array();
 foreach ($row as $temp) {
-	$D['emailtype'][$temp['id']] = $temp;
+	$D['emailtypeall'][$temp['id']] = $temp;
 	if ($temp['inuse'] == 1) {
-		$D['emailtypeall'][$temp['id']] = $temp;
+		$D['emailtype'][$temp['id']] = $temp;
 	}
 }
 

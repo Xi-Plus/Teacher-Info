@@ -6,9 +6,9 @@ $row = $sth->fetchAll(PDO::FETCH_ASSOC);
 $D['teachertype'] = array();
 $D['teachertypeall'] = array();
 foreach ($row as $temp) {
-	$D['teachertype'][$temp['id']] = $temp;
+	$D['teachertypeall'][$temp['id']] = $temp;
 	if ($temp['inuse'] == 1) {
-		$D['teachertypeall'][$temp['id']] = $temp;
+		$D['teachertype'][$temp['id']] = $temp;
 	}
 }
 
