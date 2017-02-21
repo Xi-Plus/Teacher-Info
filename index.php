@@ -38,12 +38,34 @@ require("header.php");
 			</a>
 		</p>
 		<p>
-			<a class="btn btn-lg btn-primary" href="<?=$C["path"]?>/manageplans/" role="button">
+			<a class="btn btn-lg btn-primary" href="<?=$C["path"]?>/export/school/" role="button">
+				<i class="fa fa-graduation-cap" aria-hidden="true"></i>
+				匯出學校資料
+				<i class="fa fa-pencil" aria-hidden="true"></i>
+			</a>
+			<a class="btn btn-lg btn-primary" href="<?=$C["path"]?>/export/teacher/" role="button">
+				<i class="fa fa-user" aria-hidden="true"></i>
+				匯出教師資料
+				<i class="fa fa-pencil" aria-hidden="true"></i>
+			</a>
+			<a class="btn btn-lg btn-primary" href="<?=$C["path"]?>/export/schoollist/" role="button">
+				<i class="fa fa-user" aria-hidden="true"></i>
+				匯出學校列表
+				<i class="fa fa-pencil" aria-hidden="true"></i>
+			</a>
+		</p>
+		<p>
+			<a class="btn btn-lg btn-primary" href="<?=$C["path"]?>/manage/schoollist/" role="button">
 				<i class="fa fa-graduation-cap" aria-hidden="true"></i>
 				學校管理
 				<i class="fa fa-pencil" aria-hidden="true"></i>
 			</a>
-			<a class="btn btn-lg btn-primary" href="<?=$C["path"]?>/managefiles/" role="button">
+			<a class="btn btn-lg btn-primary" href="<?=$C["path"]?>/manage/teachertype/" role="button">
+				<i class="fa fa-user" aria-hidden="true"></i>
+				教師管理
+				<i class="fa fa-pencil" aria-hidden="true"></i>
+			</a>
+			<a class="btn btn-lg btn-primary" href="<?=$C["path"]?>/manage/emailtype/" role="button">
 				<i class="fa fa-user" aria-hidden="true"></i>
 				教師管理
 				<i class="fa fa-pencil" aria-hidden="true"></i>
