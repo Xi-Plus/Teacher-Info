@@ -125,7 +125,7 @@ if ($step == 0) {
 	<form method="post">
 		<input type="hidden" name="step" value="<?=$step?>">
 		<div class="row">
-			<label class="col-sm-3 col-md-2 form-control-label"><i class="fa fa-bookmark itemicon" aria-hidden="true"></i> 學校名稱</label>
+			<label class="col-sm-3 col-md-2 form-control-label"><i class="fa fa-graduation-cap itemicon" aria-hidden="true"></i> 學校名稱</label>
 			<div class="col-sm-9 col-md-10">
 				<input type="text" class="form-control" id="filter_name" oninput="filter()" placeholder="輸入文字以篩選">
 				<select name="schoolid" id="schoolid" class="form-control" required>
@@ -144,14 +144,14 @@ if ($step == 0) {
 			</div>
 		</div>
 		<div class="row">
-			<label class="col-sm-3 col-md-2 form-control-label"><i class="fa fa-header itemicon" aria-hidden="true"></i> 教師姓名</label>
+			<label class="col-sm-3 col-md-2 form-control-label"><i class="fa fa-user itemicon" aria-hidden="true"></i> 教師姓名</label>
 			<div class="col-sm-9 col-md-10">
 				<input type="text" class="form-control" name="teachername" required autocomplete="name">
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-sm-9 offset-sm-3 col-md-10 offset-md-2">
-				<button type="submit" class="btn btn-success">送出</button>
+				<button type="submit" class="btn btn-success"><i class="fa fa-check" aria-hidden="true"></i> 送出</button>
 			</div>
 		</div>
 	</form>
@@ -161,14 +161,14 @@ if ($step == 0) {
 	<form method="post">
 		<input type="hidden" name="step" value="<?=$step?>">
 		<div class="row">
-			<label class="col-sm-3 col-md-2 form-control-label"><i class="fa fa-bookmark itemicon" aria-hidden="true"></i> 學校</label>
+			<label class="col-sm-3 col-md-2 form-control-label"><i class="fa fa-graduation-cap itemicon" aria-hidden="true"></i> 學校</label>
 			<label class="col-sm-9 col-md-10 form-control-label">
 				<?=$school["name"]?>
 			</label>
 			<input type="hidden" name="schoolid" value="<?=$schoolid?>">
 		</div>
 		<div class="row">
-			<label class="col-sm-3 col-md-2 form-control-label"><i class="fa fa-bookmark itemicon" aria-hidden="true"></i> 教師姓名</label>
+			<label class="col-sm-3 col-md-2 form-control-label"><i class="fa fa-user itemicon" aria-hidden="true"></i> 教師姓名</label>
 			<label class="col-sm-9 col-md-10 form-control-label">
 				<?=$_POST["teachername"]?>
 			</label>
@@ -181,7 +181,7 @@ if ($step == 0) {
 			</div>
 		</div>
 		<div class="row">
-			<label class="col-sm-3 col-md-2 form-control-label" for="schoolid2"><i class="fa fa-user itemicon" aria-hidden="true"></i> 教師類別</label>
+			<label class="col-sm-3 col-md-2 form-control-label" for="schoolid2"><i class="fa fa-bookmark itemicon" aria-hidden="true"></i> 教師類別</label>
 			<div class="col-sm-9 col-md-10 form-inline">
 				<select name="teachertype" id="teachertype" class="form-control" required>
 					<option hidden value="">請選取</option>
@@ -204,7 +204,7 @@ if ($step == 0) {
 			</div>
 		</div>
 		<div class="row">
-			<label class="col-sm-3 col-md-2 form-control-label"><i class="fa fa-header itemicon" aria-hidden="true"></i> 電話</label>
+			<label class="col-sm-3 col-md-2 form-control-label"><i class="fa fa-phone itemicon" aria-hidden="true"></i> 電話</label>
 			<div class="col-sm-9 col-md-10 form-inline">
 				<?php
 				if ($old) {
@@ -222,7 +222,7 @@ if ($step == 0) {
 			</div>
 		</div>
 		<div class="row">
-			<label class="col-sm-3 col-md-2 form-control-label"><i class="fa fa-header itemicon" aria-hidden="true"></i> 手機</label>
+			<label class="col-sm-3 col-md-2 form-control-label"><i class="fa fa-mobile itemicon" aria-hidden="true"></i> 手機</label>
 			<div class="col-sm-9 col-md-10 form-inline">
 				<?php
 				if ($old) {
@@ -238,7 +238,7 @@ if ($step == 0) {
 			</div>
 		</div>
 		<div class="row">
-			<label class="col-sm-3 col-md-2 form-control-label"><i class="fa fa-header itemicon" aria-hidden="true"></i> Email</label>
+			<label class="col-sm-3 col-md-2 form-control-label"><i class="fa fa-envelope itemicon" aria-hidden="true"></i> Email</label>
 			<div class="col-sm-9 col-md-10">
 				<?php
 				if ($old) {
@@ -254,7 +254,7 @@ if ($step == 0) {
 			</div>
 		</div>
 		<div class="row">
-			<label class="col-sm-3 col-md-2 form-control-label"><i class="fa fa-header itemicon" aria-hidden="true"></i> 電子報</label>
+			<label class="col-sm-3 col-md-2 form-control-label"><i class="fa fa-commenting-o itemicon" aria-hidden="true"></i> 電子報</label>
 			<div class="col-sm-9 col-md-10">
 				<?php
 				if ($old) {
@@ -280,7 +280,7 @@ if ($step == 0) {
 		</div>
 		<div class="row">
 			<div class="col-sm-9 offset-sm-3 col-md-10 offset-md-2">
-				<button type="submit" class="btn btn-success">送出</button>
+				<button type="submit" class="btn btn-success"><i class="fa fa-check" aria-hidden="true"></i> 送出</button>
 			</div>
 		</div>
 	</form>

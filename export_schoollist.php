@@ -46,9 +46,9 @@ require("header.php");
 <div class="container-fluid">
 	<h2>學校列表</h2>
 	<form action="" method="post">
-		<button class="btn btn-default" type="submit" name="view">檢視</button>
-		<button class="btn btn-success" type="submit" name="download">下載</button>
-		<button class="btn btn-success" type="submit" name="importable">下載成可匯入格式</button>
+		<button class="btn btn-default" type="submit" name="view"><i class="fa fa-eye" aria-hidden="true"></i> 檢視</button>
+		<button class="btn btn-success" type="submit" name="download"><i class="fa fa-download" aria-hidden="true"></i> 下載</button>
+		<button class="btn btn-success" type="submit" name="importable"><i class="fa fa-cloud-download" aria-hidden="true"></i> 下載成可匯入格式</button>
 	</form>
 	<?php
 	if (isset($_POST["view"])) {

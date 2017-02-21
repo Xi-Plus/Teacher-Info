@@ -171,9 +171,18 @@ if ($step == 0) {
 		?>
 		<form action="" method="post" enctype="multipart/form-data" class="form-inline">
 			<input type="hidden" name="step" value="<?=$step?>">
-			<label>選擇檔案：<input type="file" name="file" accept=".csv" class="form-control" required></label> 
-			<label><input type="checkbox" name="override">清除所有資料後再匯入</label> 
-			<button type="submit" class="btn btn-success form-control"><i class="fa fa-upload" aria-hidden="true"></i> 上傳</button>
+  			<div class="form-group">
+				<label class="form-control-label" for="file">選擇檔案：</label>
+				<input type="file" id="file" name="file" accept=".csv" class="form-control-file" required>
+			</div>
+  			<div class="form-check">
+				<label class="form-check-label">
+					<input type="checkbox" name="override" class="form-check-input">
+					<i class="fa fa-trash" aria-hidden="true"></i>
+					清除所有資料後再匯入
+				</label>
+			</div>
+			<button type="submit" class="btn btn-success form-control"><i class="fa fa-upload" aria-hidden="true"></i> 上傳</button> 
 		</form>
 		<?php
 	} else if ($step == 2) {
@@ -243,7 +252,7 @@ if ($step == 0) {
 				echo "沒有任何變更";
 			} else {
 				?>
-				<button type="submit" class="btn btn-success form-inline"><i class="fa fa-upload" aria-hidden="true"></i> 確認</button> 如果資料有錯誤，請回到上一步驟，修改檔案後重新上傳
+				<button type="submit" class="btn btn-success form-inline"><i class="fa fa-check" aria-hidden="true"></i> 確認</button> 如果資料有錯誤，請回到上一步驟，修改檔案後重新上傳
 				<?php
 			}
 			?>

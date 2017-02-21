@@ -76,8 +76,8 @@ require("header.php");
 			}
 			?>
 		</select>
-		<button class="btn btn-default" type="submit" name="view">檢視</button>
-		<button class="btn btn-success" type="submit" name="download">下載</button>
+		<button class="btn btn-default" type="submit" name="view"><i class="fa fa-eye" aria-hidden="true"></i> 檢視</button>
+		<button class="btn btn-success" type="submit" name="download"><i class="fa fa-download" aria-hidden="true"></i> 下載</button>
 	</form>
 	<?php
 	if (isset($_POST["view"])) {

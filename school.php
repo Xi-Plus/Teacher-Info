@@ -90,7 +90,7 @@ function filter(){
 	<form method="post">
 		<input type="hidden" name="step" value="<?=$step?>">
 		<div class="row">
-			<label class="col-sm-3 col-md-2 form-control-label"><i class="fa fa-bookmark itemicon" aria-hidden="true"></i> 學校名稱</label>
+			<label class="col-sm-3 col-md-2 form-control-label"><i class="fa fa-header itemicon" aria-hidden="true"></i> 學校名稱</label>
 			<div class="col-sm-9 col-md-10">
 				<input type="text" class="form-control" id="filter_name" oninput="filter()" placeholder="輸入文字以篩選">
 				<select name="schoolid" id="schoolid" class="form-control" required>
@@ -109,14 +109,14 @@ function filter(){
 			</div>
 		</div>
 		<div class="row">
-			<label class="col-sm-3 col-md-2 form-control-label"><i class="fa fa-header itemicon" aria-hidden="true"></i> 學校代碼</label>
+			<label class="col-sm-3 col-md-2 form-control-label"><i class="fa fa-hashtag itemicon" aria-hidden="true"></i> 學校代碼</label>
 			<div class="col-sm-9 col-md-10">
 				<input type="text" class="form-control" name="schoolid2" required>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-sm-9 offset-sm-3 col-md-10 offset-md-2">
-				<button type="submit" class="btn btn-success">送出</button>
+				<button type="submit" class="btn btn-success"><i class="fa fa-check" aria-hidden="true"></i> 送出</button>
 			</div>
 		</div>
 	</form>
@@ -127,7 +127,7 @@ function filter(){
 		<input type="hidden" name="step" value="<?=$step?>">
 		<input type="hidden" name="schoolid" value="<?=$schoolid?>">
 		<div class="row">
-			<label class="col-sm-3 col-md-2 form-control-label"><i class="fa fa-bookmark itemicon" aria-hidden="true"></i> 學校</label>
+			<label class="col-sm-3 col-md-2 form-control-label"><i class="fa fa-graduation-cap itemicon" aria-hidden="true"></i> 學校</label>
 			<label class="col-sm-9 col-md-10 form-control-label">
 				<?=$school["id"]?> <?=$school["name"]?>
 			</label>
@@ -146,7 +146,7 @@ function filter(){
 					require("func/teachertype.php");
 					foreach ($D['teachertype'] as $id => $teachertype) {
 						?>
-						<div class="col-sm-6 col-md-4 col-lg-3">
+						<div class="col-sm-6 col-md-4">
 							<?=$teachertype["name"]?>：<br>
 							<input type="number" class="form-control" name="teachercnt[<?=$id?>]" min="0" required>
 						</div>
@@ -158,7 +158,7 @@ function filter(){
 		</div>
 		<div class="row">
 			<div class="col-sm-9 offset-sm-3 col-md-10 offset-md-2">
-				<button type="submit" class="btn btn-success">送出</button>
+				<button type="submit" class="btn btn-success"><i class="fa fa-check" aria-hidden="true"></i> 送出</button>
 			</div>
 		</div>
 	</form>
