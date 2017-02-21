@@ -1,8 +1,50 @@
-<!DOCTYPE html>
 <?php
 require('config/config.php');
 require("func/school_list.php");
+require("func/teachertype.php");
+require("func/emailtype.php");
+$schoolid = $_POST["school"] ?? "";
+if (isset($_POST["school"])) {
+	if ($_POST["school"] == "all") {
+		$sth = $G["db"]->prepare("SELECT * FROM `teacher_data` `d1` WHERE `updatetime` = (
+			SELECT MAX(`d2`.`updatetime`) FROM `teacher_data` `d2` WHERE `d1`.`school_id` = `d2`.`school_id` AND `d1`.`name` = `d2`.`name`) ORDER BY `school_id` ASC");
+	} else {
+		$sth = $G["db"]->prepare("SELECT * FROM `teacher_data` `d1` WHERE `updatetime` = (
+			SELECT MAX(`d2`.`updatetime`) FROM `teacher_data` `d2` WHERE `d1`.`school_id` = `d2`.`school_id` AND `d1`.`name` = `d2`.`name`) AND `school_id` = :school_id ORDER BY `school_id` ASC");
+		$sth->bindValue(":school_id", $_POST["school"]);
+	}
+	$sth->execute();
+	$row = $sth->fetchAll(PDO::FETCH_ASSOC);
+}
+if (isset($_POST["download"])) {
+	header('Content-Description: File Transfer');
+	header('Content-Type: text/csv; charset=utf-8');
+	header('Content-Disposition: attachment; filename="'.$C["sitename"]."-教師資料-".($_POST["school"] == "all"?"全部學校":$D['school_list'][$schoolid]["name"])."-".date("YmdHis").'.csv');
+	header('Expires: 0');
+	header('Cache-Control: must-revalidate');
+	header('Pragma: public');
+	echo chr(239).chr(187).chr(191);
+	echo "學校名稱,姓名,教師類型,電話,手機,Email,電子報,學年度,確認,更新時間\n";
+	foreach ($row as $data) {
+		echo $D['school_list'][$data["school_id"]]["name"].",";
+		echo $data["name"].",";
+		echo $D['teachertypeall'][$data["teacher_type"]]["name"].",";
+		echo $data["phone"].",";
+		echo $data["mobile"].",";
+		echo $data["email"].",";
+		foreach (json_decode($data["email_type"]) as $id) {
+			echo $D['emailtypeall'][$id]["name"]." ";
+		}
+		echo ",";
+		echo $data["year"].",";
+		echo $G["confirm"][$data["confirm"]].",";
+		echo $data["updatetime"];
+		echo "\n";
+	}
+	exit;
+}
 ?>
+<!DOCTYPE html>
 <html lang="zh-Hant-TW">
 <head>
 <meta charset="UTF-8">
@@ -19,14 +61,11 @@ body {
 <body>
 <?php
 require("header.php");
-require("func/teachertype.php");
-require("func/emailtype.php");
-$schoolid = $_POST["school"] ?? "";
 ?>
 <div class="container-fluid">
 	<h2>教師資料</h2>
-	<form action="" method="post" id="form">
-		<select name="school" class="form-control" required onchange="form.submit();">
+	<form action="" method="post">
+		<select name="school" class="form-control" required>
 			<option value="" hidden>請選擇</option>
 			<option value="all" <?=($schoolid=="all"?"selected":"")?>>全部學校</option>
 			<?php
@@ -37,19 +76,11 @@ $schoolid = $_POST["school"] ?? "";
 			}
 			?>
 		</select>
+		<button class="btn btn-default" type="submit" name="view">檢視</button>
+		<button class="btn btn-success" type="submit" name="download">下載</button>
 	</form>
 	<?php
-	if (isset($_POST["school"])) {
-		if ($_POST["school"] == "all") {
-			$sth = $G["db"]->prepare("SELECT * FROM `teacher_data` `d1` WHERE `updatetime` = (
-				SELECT MAX(`d2`.`updatetime`) FROM `teacher_data` `d2` WHERE `d1`.`school_id` = `d2`.`school_id` AND `d1`.`name` = `d2`.`name`) ORDER BY `school_id` ASC");
-		} else {
-			$sth = $G["db"]->prepare("SELECT * FROM `teacher_data` `d1` WHERE `updatetime` = (
-				SELECT MAX(`d2`.`updatetime`) FROM `teacher_data` `d2` WHERE `d1`.`school_id` = `d2`.`school_id` AND `d1`.`name` = `d2`.`name`) AND `school_id` = :school_id ORDER BY `school_id` ASC");
-			$sth->bindValue(":school_id", $_POST["school"]);
-		}
-		$sth->execute();
-		$row = $sth->fetchAll(PDO::FETCH_ASSOC);
+	if (isset($_POST["view"])) {
 	?>
 	<div class="table-responsive">
 		<table class="table">
