@@ -41,17 +41,17 @@ require("header.php");
 			<a class="btn btn-lg btn-primary" href="<?=$C["path"]?>/export/school/" role="button">
 				<i class="fa fa-graduation-cap" aria-hidden="true"></i>
 				匯出學校資料
-				<i class="fa fa-pencil" aria-hidden="true"></i>
+				<i class="fa fa-download" aria-hidden="true"></i>
 			</a>
 			<a class="btn btn-lg btn-primary" href="<?=$C["path"]?>/export/teacher/" role="button">
 				<i class="fa fa-user" aria-hidden="true"></i>
 				匯出教師資料
-				<i class="fa fa-pencil" aria-hidden="true"></i>
+				<i class="fa fa-download" aria-hidden="true"></i>
 			</a>
 			<a class="btn btn-lg btn-primary" href="<?=$C["path"]?>/export/schoollist/" role="button">
-				<i class="fa fa-user" aria-hidden="true"></i>
+				<i class="fa fa-graduation-cap" aria-hidden="true"></i>
 				匯出學校列表
-				<i class="fa fa-pencil" aria-hidden="true"></i>
+				<i class="fa fa-download" aria-hidden="true"></i>
 			</a>
 		</p>
 		<p>
@@ -66,8 +66,8 @@ require("header.php");
 				<i class="fa fa-pencil" aria-hidden="true"></i>
 			</a>
 			<a class="btn btn-lg btn-primary" href="<?=$C["path"]?>/manage/emailtype/" role="button">
-				<i class="fa fa-user" aria-hidden="true"></i>
-				教師管理
+				<i class="fa fa-envelope" aria-hidden="true"></i>
+				電子報管理
 				<i class="fa fa-pencil" aria-hidden="true"></i>
 			</a>
 		</p>
