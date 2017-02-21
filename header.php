@@ -20,6 +20,7 @@
 				<div class="dropdown-menu" aria-labelledby="manage">
 					<a class="dropdown-item" href="<?=$C["path"]?>/export/school/"><i class="fa fa-graduation-cap" aria-hidden="true"></i> 學校</a>
 					<a class="dropdown-item" href="<?=$C["path"]?>/export/teacher/"><i class="fa fa-user" aria-hidden="true"></i> 教師</a>
+					<a class="dropdown-item" href="<?=$C["path"]?>/export/schoollist/"><i class="fa fa-graduation-cap" aria-hidden="true"></i> 學校列表</a>
 				</div>
 			</li>
 			<li class="nav-item dropdown">
