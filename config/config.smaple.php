@@ -11,4 +11,7 @@ $C["DBname"] = 'dbname';
 
 $G["db"] = new PDO ('mysql:host='.$C["DBhost"].';dbname='.$C["DBname"].';charset=utf8', $C["DBuser"], $C["DBpass"]);
 $G["schoolyear"] = date("Y")-1911-(date("m")<=8);
+$G["confirm"] = array("未確認", "已確認");
 $G["inuse"] = array("隱藏", "顯示");
+
+date_default_timezone_set("Asia/Taipei");
