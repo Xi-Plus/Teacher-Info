@@ -52,15 +52,24 @@ if ($step == 0) {
 				</div>
 				<?php
 			} else {
-				if ($_FILES["file"]["type"] !== "application/vnd.ms-excel") {
+				if (!in_array($_FILES["file"]["type"], $G["csvmime"])) {
 					?>
 					<div class="alert alert-warning alert-dismissible" role="alert">
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						檔案格式可能不是逗號分隔值(CSV)
+						檔案格式可能不是逗號分隔值(CSV)，你的檔案格式是<?=$_FILES["file"]["type"]?>
 					</div>
 					<?php
 				}
 				$step++;
+				if (substr($file, 0, 3) == chr(239).chr(187).chr(191)) {
+					?>
+					<div class="alert alert-info alert-dismissible" role="alert">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						自動處理BOM
+					</div>
+					<?php
+					$file = substr($file, 3);
+				}
 				$row = explode("\n", $file);
 				$newlist = array();
 				foreach ($row as $line => $data) {
@@ -69,18 +78,32 @@ if ($step == 0) {
 						?>
 						<div class="alert alert-warning alert-dismissible" role="alert">
 							<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-							第<?=($line)?>行為空行，略過
+							第<?=($line+1)?>行為空行，略過
 						</div>
 						<?php
 					} else if (count($data) !== 3) {
 						?>
 						<div class="alert alert-danger alert-dismissible" role="alert">
 							<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-							第<?=($line)?>行欄位數不為3，略過
+							第<?=($line+1)?>行欄位數不為3，略過
+						</div>
+						<?php
+					} else if (!preg_match("/^[A-Za-z0-9]{1,6}$/", $data[0])) {
+						?>
+						<div class="alert alert-danger alert-dismissible" role="alert">
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							第<?=($line+1)?>行第1欄不合法，不是1~6個英數字，略過
+						</div>
+						<?php
+					}  else if ( $data[2]!== "" && $data[2]!=="0" && $data[2]!=="1") {
+						?>
+						<div class="alert alert-danger alert-dismissible" role="alert">
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							第<?=($line+1)?>行第3欄不合法，不是空字串或0或1，略過
 						</div>
 						<?php
 					} else {
-						$newlist[$data[0]] = array("name"=>$data[1], "inuse"=>($data[2]=="0"?"0":"1"));
+						$newlist[strtoupper($data[0])] = array("name"=>$data[1], "inuse"=>($data[2]=="0"?"0":"1"));
 					}
 				}
 			}

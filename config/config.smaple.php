@@ -14,4 +14,6 @@ $G["schoolyear"] = date("Y")-1911-(date("m")<=8);
 $G["confirm"] = array("未確認", "已確認");
 $G["inuse"] = array("隱藏", "顯示");
 
+$G["csvmime"] = array("application/vnd.ms-excel", "text/comma-separated-values");
+
 date_default_timezone_set("Asia/Taipei");
