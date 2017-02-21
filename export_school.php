@@ -1,7 +1,7 @@
-<!DOCTYPE html>
 <?php
 require('config/config.php');
 require("func/school_list.php");
+require("func/teachertype.php");
 $sth = $G["db"]->prepare("SELECT * FROM `school_data` `d1` WHERE `updatetime` = (
 	SELECT MAX(`d2`.`updatetime`) FROM `school_data` `d2` WHERE `d1`.`id` = `d2`.`id`)");
 $sth->execute();
@@ -9,7 +9,34 @@ $row = $sth->fetchAll(PDO::FETCH_ASSOC);
 foreach ($row as $data) {
 	$D['school_list'][$data["id"]]["data"] = $data;
 }
+if (isset($_POST["download"])) {
+	header('Content-Description: File Transfer');
+	header('Content-Type: text/csv; charset=utf-8');
+	header('Content-Disposition: attachment; filename="'.$C["sitename"]."-學校資料-".date("YmdHis").'.csv');
+	header('Expires: 0');
+	header('Cache-Control: must-revalidate');
+	header('Pragma: public');
+	echo chr(239).chr(187).chr(191);
+	echo "學校名稱,教師人數,學年度,確認,更新時間\n";
+	foreach ($D['school_list'] as $schoolid => $school) {
+		echo $school["name"].",";
+		if (isset($school["data"])) {
+			foreach (json_decode($school["data"]["teacher_count"]) as $id => $cnt) {
+				echo $D['teachertypeall'][$id]["name"]."：".$cnt." ";
+			}
+			echo ",";
+			echo $school["data"]["year"].",";
+			echo $G["confirm"][$school["data"]["confirm"]].",";
+			echo $school["data"]["updatetime"];
+		} else {
+			echo "未填寫,,,";
+		}
+		echo "\n";
+	}
+	exit;
+}
 ?>
+<!DOCTYPE html>
 <html lang="zh-Hant-TW">
 <head>
 <meta charset="UTF-8">
@@ -26,10 +53,16 @@ body {
 <body>
 <?php
 require("header.php");
-require("func/teachertype.php");
 ?>
 <div class="container-fluid">
 	<h2>學校資料</h2>
+	<form action="" method="post">
+		<button class="btn btn-default" type="submit" name="view">檢視</button>
+		<button class="btn btn-success" type="submit" name="download">下載</button>
+	</form>
+	<?php
+	if (isset($_POST["view"])) {
+	?>
 	<div class="table-responsive">
 		<table class="table">
 			<tr>
@@ -68,6 +101,9 @@ require("func/teachertype.php");
 			?>
 		</table>
 	</div>
+	<?php
+	}
+	?>
 </div>
 
 <?php
