@@ -55,14 +55,6 @@ CREATE TABLE `teacher_data` (
   `hash` varchar(32) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `teacher_list` (
-  `school_id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `updatetime` datetime NOT NULL,
-  `hash` varchar(32) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 CREATE TABLE `teacher_type` (
   `id` int(11) NOT NULL,
   `name` varchar(20) NOT NULL,
