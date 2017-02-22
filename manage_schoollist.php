@@ -194,6 +194,13 @@ if ($showform) {
 			</div>
 			<button type="submit" class="btn btn-success form-control"><i class="fa fa-upload" aria-hidden="true"></i> 上傳</button> 
 		</form>
+		檔案格式：3欄的CSV(逗號分隔值)檔
+		<ul>
+			<li>第一欄為學校編號，至多6個英數字</li>
+			<li>第二欄為學校名稱</li>
+			<li>第三欄為顯示或隱藏狀態，0為隱藏，1或空字串為顯示</li>
+		</ul>
+		當前列表可從<a href="<?=$C["path"]?>/export/schoollist/" target="_blank">匯出學校列表</a>頁面下載
 		<?php
 	} else if ($step == 2) {
 		?>
