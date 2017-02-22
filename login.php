@@ -46,7 +46,7 @@ if ($_GET["action"] === "login") {
 				登入成功
 			</div>
 			<?php
-			$U = $account;
+			$U["data"] = $account;
 			$U["islogin"] = true;
 			$showform = false;
 		} else {

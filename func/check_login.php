@@ -13,7 +13,7 @@ if (!isset($_COOKIE[$C["cookiename"]])) {
 		$sth = $G["db"]->prepare('SELECT * FROM `account` WHERE `account` = :account');
 		$sth->bindValue(":account", $cookie["account"]);
 		$sth->execute();
-		$U = $sth->fetch(PDO::FETCH_ASSOC);
+		$U["data"] = $sth->fetch(PDO::FETCH_ASSOC);
 		$U["islogin"] = true;
 	}
 }
