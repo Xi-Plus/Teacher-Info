@@ -3,6 +3,7 @@
 您剛剛在<strong><?php echo $mail['sitename'];?></strong>使用了此電子郵件填報資料，所以收到了這封電子郵件。<br>
 如果您沒有填報，請<a href="<?php echo $mail['url'];?>/confirm/teacher/error/<?php echo $mail['hash'];?>/" target="_blank">點選這裡報告錯誤</a><br>
 如果您確認以下資料正確，請<a href="<?php echo $mail['url'];?>/confirm/teacher/ok/<?php echo $mail['hash'];?>/" target="_blank">點選這裡確認</a><br>
+如果發現資料有誤，請<a href="<?php echo $mail['url'];?>/teacher/" target="_blank">重新填寫</a><br>
 <br>
 <table>
 	<tr><td>學校</td><td><?php echo $mail['school'];?></tr></td>
