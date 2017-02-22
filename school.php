@@ -51,7 +51,7 @@ if ($step == 0) {
 	$hash = md5(uniqid(rand(),true));
 	$sth = $G["db"]->prepare("INSERT INTO `school_data` (`id`, `teacher_count`, `year`, `hash`) VALUES (:id, :teacher_count, :year, :hash);");
 	$sth->bindValue(":id", $schoolid);
-	$sth->bindValue(":teacher_count", json_encode($_POST["teachercnt"]));
+	$sth->bindValue(":teacher_count", json_encode($_POST["teachercnt"], JSON_NUMERIC_CHECK));
 	$sth->bindValue(":year", $_POST["schoolyear"]);
 	$sth->bindValue(":hash", $hash);
 	$sth->execute();
