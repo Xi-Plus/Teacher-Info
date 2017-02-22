@@ -10,6 +10,9 @@ $C["DBuser"] = 'user';
 $C["DBpass"] = 'pass';
 $C["DBname"] = 'dbname';
 
+$C["cookiename"] = 'teacherinfo';
+$C["cookieexpire"] = 86400*7;
+
 $C["mail"] = 'no-reply@sp.tnfsh.tn.edu.tw';
 
 $G["db"] = new PDO ('mysql:host='.$C["DBhost"].';dbname='.$C["DBname"].';charset=utf8', $C["DBuser"], $C["DBpass"]);

@@ -29,7 +29,23 @@
 					<a class="dropdown-item" href="<?=$C["path"]?>/manage/schoollist/"><i class="fa fa-graduation-cap" aria-hidden="true"></i> 學校列表</a>
 					<a class="dropdown-item" href="<?=$C["path"]?>/manage/teachertype/"><i class="fa fa-user" aria-hidden="true"></i> 教師類別</a>
 					<a class="dropdown-item" href="<?=$C["path"]?>/manage/emailtype/"><i class="fa fa-envelope" aria-hidden="true"></i> 電子報類別</a>
+					<a class="dropdown-item" href="<?=$C["path"]?>/manage/account/"><i class="fa fa-user" aria-hidden="true"></i> 帳號</a>
 				</div>
+			</li>
+		</ul>
+		<ul class="navbar-nav mt-2 mt-md-0">
+			<li class="nav-item">
+				<?php
+				if ($U["islogin"]) {
+					?>
+					<a class="nav-link" href="<?=$C["path"]?>/logout/"><?=$U["account"]?> / <?=$U["name"]?> <i class="fa fa-sign-out" aria-hidden="true"></i> 登出</a>
+					<?php
+				} else {
+					?>
+					<a class="nav-link" href="<?=$C["path"]?>/login/"><i class="fa fa-sign-in" aria-hidden="true"></i> 登入</a>
+					<?php
+				}
+				?>
 			</li>
 		</ul>
 	</div>

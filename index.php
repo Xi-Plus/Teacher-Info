@@ -70,6 +70,11 @@ require("header.php");
 				電子報管理
 				<i class="fa fa-pencil" aria-hidden="true"></i>
 			</a>
+			<a class="btn btn-lg btn-primary" href="<?=$C["path"]?>/manage/account/" role="button">
+				<i class="fa fa-user" aria-hidden="true"></i>
+				帳號管理
+				<i class="fa fa-pencil" aria-hidden="true"></i>
+			</a>
 		</p>
 	</div>
 </div>

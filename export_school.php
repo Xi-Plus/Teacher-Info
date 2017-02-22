@@ -2,38 +2,49 @@
 require('config/config.php');
 require("func/school_list.php");
 require("func/teachertype.php");
-$sth = $G["db"]->prepare("SELECT * FROM `school_data` `d1` WHERE `updatetime` = (
-	SELECT MAX(`d2`.`updatetime`) FROM `school_data` `d2` WHERE `d1`.`id` = `d2`.`id`)");
-$sth->execute();
-$row = $sth->fetchAll(PDO::FETCH_ASSOC);
-foreach ($row as $data) {
-	$D['school_list'][$data["id"]]["data"] = $data;
-}
-if (isset($_POST["download"])) {
-	header('Content-Description: File Transfer');
-	header('Content-Type: text/csv; charset=utf-8');
-	header('Content-Disposition: attachment; filename="'.$C["sitename"]."-學校資料-".date("YmdHis").'.csv');
-	header('Expires: 0');
-	header('Cache-Control: must-revalidate');
-	header('Pragma: public');
-	echo chr(239).chr(187).chr(191);
-	echo "學校名稱,教師人數,學年度,確認,更新時間\n";
-	foreach ($D['school_list'] as $schoolid => $school) {
-		echo $school["name"].",";
-		if (isset($school["data"])) {
-			foreach (json_decode($school["data"]["teacher_count"]) as $id => $cnt) {
-				echo $D['teachertypeall'][$id]["name"]."：".$cnt." ";
-			}
-			echo ",";
-			echo $school["data"]["year"].",";
-			echo $G["confirm"][$school["data"]["confirm"]].",";
-			echo $school["data"]["updatetime"];
-		} else {
-			echo "未填寫,,,";
-		}
-		echo "\n";
+$showform = true;
+if (!$U["islogin"]) {
+	?>
+	<div class="alert alert-danger alert-dismissible" role="alert">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		此功能需要驗證帳號，請<a href="<?=$C["path"]?>/login/">登入</a>
+	</div>
+	<?php
+	$showform = false;
+} else {
+	$sth = $G["db"]->prepare("SELECT * FROM `school_data` `d1` WHERE `updatetime` = (
+		SELECT MAX(`d2`.`updatetime`) FROM `school_data` `d2` WHERE `d1`.`id` = `d2`.`id`)");
+	$sth->execute();
+	$row = $sth->fetchAll(PDO::FETCH_ASSOC);
+	foreach ($row as $data) {
+		$D['school_list'][$data["id"]]["data"] = $data;
 	}
-	exit;
+	if (isset($_POST["download"])) {
+		header('Content-Description: File Transfer');
+		header('Content-Type: text/csv; charset=utf-8');
+		header('Content-Disposition: attachment; filename="'.$C["sitename"]."-學校資料-".date("YmdHis").'.csv');
+		header('Expires: 0');
+		header('Cache-Control: must-revalidate');
+		header('Pragma: public');
+		echo chr(239).chr(187).chr(191);
+		echo "學校名稱,教師人數,學年度,確認,更新時間\n";
+		foreach ($D['school_list'] as $schoolid => $school) {
+			echo $school["name"].",";
+			if (isset($school["data"])) {
+				foreach (json_decode($school["data"]["teacher_count"]) as $id => $cnt) {
+					echo $D['teachertypeall'][$id]["name"]."：".$cnt." ";
+				}
+				echo ",";
+				echo $school["data"]["year"].",";
+				echo $G["confirm"][$school["data"]["confirm"]].",";
+				echo $school["data"]["updatetime"];
+			} else {
+				echo "未填寫,,,";
+			}
+			echo "\n";
+		}
+		exit;
+	}
 }
 ?>
 <!DOCTYPE html>
@@ -53,6 +64,7 @@ body {
 <body>
 <?php
 require("header.php");
+if ($showform) {
 ?>
 <div class="container-fluid">
 	<h2>學校資料</h2>
@@ -107,6 +119,7 @@ require("header.php");
 </div>
 
 <?php
+}
 require("footer.php");
 ?>
 <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
