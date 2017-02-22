@@ -7,10 +7,22 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 
+CREATE TABLE `account` (
+  `account` varchar(20) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `name` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE `email_type` (
   `id` int(11) NOT NULL,
   `name` varchar(20) NOT NULL,
   `inuse` tinyint(1) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `login_session` (
+  `account` varchar(20) NOT NULL,
+  `cookie` varchar(32) NOT NULL,
+  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `school_data` (
@@ -57,8 +69,14 @@ CREATE TABLE `teacher_type` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
+ALTER TABLE `account`
+  ADD UNIQUE KEY `account` (`account`);
+
 ALTER TABLE `email_type`
   ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `login_session`
+  ADD UNIQUE KEY `time` (`time`);
 
 ALTER TABLE `school_data`
   ADD UNIQUE KEY `hash` (`hash`);
