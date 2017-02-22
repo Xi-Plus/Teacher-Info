@@ -1,0 +1,19 @@
+<html>
+<body>
+您剛剛在<strong><?php echo $mail['sitename'];?></strong>使用了此電子郵件填報資料，所以收到了這封電子郵件。<br>
+如果您沒有填報，請<a href="<?php echo $mail['url'];?>/confirm/teacher/error/<?php echo $mail['hash'];?>/" target="_blank">點選這裡報告錯誤</a><br>
+如果您確認以下資料正確，請<a href="<?php echo $mail['url'];?>/confirm/teacher/ok/<?php echo $mail['hash'];?>/" target="_blank">點選這裡確認</a><br>
+<br>
+<table>
+	<tr><td>學校</td><td><?php echo $mail['school'];?></tr></td>
+	<tr><td>姓名</td><td><?php echo $mail['name'];?></td></tr>
+	<tr><td>教師類別</td><td><?php echo $mail['teachertype'];?></td>
+	<tr><td>電話</td><td><?php echo $mail['phone'];?></td></tr>
+	<tr><td>手機</td><td><?php echo $mail['mobile'];?></td></tr>
+	<tr><td>Email</td><td><?php echo $mail['email'];?></td></tr>
+	<tr><td>電子報</td><td><?php echo $mail['emailtype'];?></td></tr>
+	<tr><td>學年度</td><td><?php echo $mail['year'];?></td></tr>
+	<tr><td>填報時間</td><td><?php echo $mail['updatetime'];?></td></tr>
+</table>
+</body>
+</html>

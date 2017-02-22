@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <?php
 require('config/config.php');
+require("func/teachertype.php");
+require("func/school_list.php");
+require("func/emailtype.php");
 $step = $_POST["step"] ?? "0";
 $schoolid = $_POST["schoolid"] ?? "";
 if ($schoolid !== false) {
@@ -115,6 +118,49 @@ if ($step == 0) {
 		</div>
 		<?php
 	}
+	if ($_POST["email"] !== "") {
+		$mail = array(
+			"sitename"=>$C["sitename"],
+			"url"=>$C["domain"].$C["path"],
+			"school"=>$D['school_list'][$_POST["schoolid"]]["name"],
+			"name"=>$_POST["teachername"],
+			"teachertype"=>$D['teachertypeall'][$_POST["teachertype"]]["name"],
+			"phone"=>$phone,
+			"mobile"=>$_POST["mobile"],
+			"email"=>$_POST["email"],
+			"emailtype"=>"",
+			"year"=>$_POST["schoolyear"],
+			"updatetime"=>date("Y-m-d H:i:s"),
+			"hash"=>$hash
+		);
+		foreach (json_decode($_POST["emailtype"], true) as $id) {
+			$mail["emailtype"] .= $D['emailtypeall'][$id]["name"]." ";
+		}
+		ob_start();
+		require("mail.html");
+		$mailtext = ob_get_contents();
+		ob_end_clean();
+		$subject = $C["sitename"]." 確認信";
+		$headers = "MIME-Version: 1.0\r\n".
+					"Content-type: text/html; charset=UTF-8\r\n".
+					"From: ".$C["mail"];
+		$mail_sent = mail($mail["email"], $subject, $mailtext, $headers);
+		if ($mail_sent) {
+			?>
+			<div class="alert alert-info alert-dismissible" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				已發送確認信
+			</div>
+			<?php
+		} else {
+			?>
+			<div class="alert alert-warning alert-dismissible" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				確認信發送失敗
+			</div>
+			<?php
+		}
+	}
 }
 ?>
 <div class="container">
@@ -193,7 +239,6 @@ if ($step == 0) {
 					}
 					?>
 					<?php
-					require("func/teachertype.php");
 					foreach ($D['teachertype'] as $id => $teachertype) {
 						?>
 						<option value="<?=$id?>"><?=$teachertype["name"]?></option>
@@ -268,7 +313,6 @@ if ($step == 0) {
 				?>
 				<div class="checkbox">
 					<?php
-					require("func/emailtype.php");
 					foreach ($D['emailtype'] as $id => $emailtype) {
 						?><label class="checkbox-inline"">
 							<input type="checkbox" name="emailtype[]" id="emailtype" value="<?=$id?>" checked><?=htmlentities($emailtype["name"])?>

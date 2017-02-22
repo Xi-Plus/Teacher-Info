@@ -7,10 +7,10 @@ $schoolid = $_POST["school"] ?? "";
 if (isset($_POST["school"])) {
 	if ($_POST["school"] == "all") {
 		$sth = $G["db"]->prepare("SELECT * FROM `teacher_data` `d1` WHERE `updatetime` = (
-			SELECT MAX(`d2`.`updatetime`) FROM `teacher_data` `d2` WHERE `d1`.`school_id` = `d2`.`school_id` AND `d1`.`name` = `d2`.`name`) ORDER BY `school_id` ASC");
+			SELECT MAX(`d2`.`updatetime`) FROM `teacher_data` `d2` WHERE `d1`.`school_id` = `d2`.`school_id` AND `d1`.`name` = `d2`.`name` AND `d1`.`confirm` <= '1') ORDER BY `school_id` ASC");
 	} else {
 		$sth = $G["db"]->prepare("SELECT * FROM `teacher_data` `d1` WHERE `updatetime` = (
-			SELECT MAX(`d2`.`updatetime`) FROM `teacher_data` `d2` WHERE `d1`.`school_id` = `d2`.`school_id` AND `d1`.`name` = `d2`.`name`) AND `school_id` = :school_id ORDER BY `school_id` ASC");
+			SELECT MAX(`d2`.`updatetime`) FROM `teacher_data` `d2` WHERE `d1`.`school_id` = `d2`.`school_id` AND `d1`.`name` = `d2`.`name` AND `d1`.`confirm` <= '1') AND `school_id` = :school_id ORDER BY `school_id` ASC");
 		$sth->bindValue(":school_id", $_POST["school"]);
 	}
 	$sth->execute();
