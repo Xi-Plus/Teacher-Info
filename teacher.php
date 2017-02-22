@@ -133,6 +133,7 @@ if ($step == 0) {
 			"emailtype"=>"",
 			"year"=>$_POST["schoolyear"],
 			"updatetime"=>date("Y-m-d H:i:s"),
+			"ip"=>$U["ip"],
 			"hash"=>$hash
 		);
 		foreach (json_decode($_POST["emailtype"], true) as $id) {
