@@ -92,7 +92,8 @@ if ($step == 0) {
 	} else {
 		$_POST["emailtype"] = json_encode($_POST["emailtype"] ?? array());
 	}
-	$sth = $G["db"]->prepare("INSERT INTO `teacher_data` (`school_id`, `name`, `teacher_type`, `phone`, `mobile`, `email`, `email_type`, `year`, `hash`) VALUES (:school_id, :name, :teacher_type, :phone, :mobile, :email, :email_type, :year, :hash)");
+	require("func/ip.php");
+	$sth = $G["db"]->prepare("INSERT INTO `teacher_data` (`school_id`, `name`, `teacher_type`, `phone`, `mobile`, `email`, `email_type`, `year`, `ip`, `hash`) VALUES (:school_id, :name, :teacher_type, :phone, :mobile, :email, :email_type, :year, :ip, :hash)");
 	$sth->bindValue(":school_id", $_POST["schoolid"]);
 	$sth->bindValue(":name", $_POST["teachername"]);
 	$sth->bindValue(":teacher_type", $_POST["teachertype"]);
@@ -101,6 +102,7 @@ if ($step == 0) {
 	$sth->bindValue(":email", $_POST["email"]);
 	$sth->bindValue(":email_type", $_POST["emailtype"]);
 	$sth->bindValue(":year", $_POST["schoolyear"]);
+	$sth->bindValue(":ip", $U["ip"]);
 	$sth->bindValue(":hash", $hash);
 	$sth->execute();
 	$step++;

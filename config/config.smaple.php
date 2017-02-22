@@ -15,6 +15,8 @@ $C["cookieexpire"] = 86400*7;
 
 $C["mail"] = 'no-reply@sp.tnfsh.tn.edu.tw';
 
+$C["ipserverkey"] = array("HTTP_CLIENT_IP", "HTTP_X_FORWARDED_FOR", "HTTP_X_FORWARDED", "HTTP_X_CLUSTER_CLIENT_IP", "HTTP_FORWARDED_FOR", "HTTP_FORWARDED", "REMOTE_ADDR", "HTTP_VIA");
+
 $G["db"] = new PDO ('mysql:host='.$C["DBhost"].';dbname='.$C["DBname"].';charset=utf8', $C["DBuser"], $C["DBpass"]);
 $G["schoolyear"] = date("Y")-1911-(date("m")<=8);
 $G["confirm"] = array("未確認", "已確認", "錯誤");
