@@ -23,3 +23,5 @@ $G["inuse"] = array("隱藏", "顯示");
 $G["csvmime"] = array("application/vnd.ms-excel", "text/comma-separated-values");
 
 date_default_timezone_set("Asia/Taipei");
+
+require("func/check_login.php");
