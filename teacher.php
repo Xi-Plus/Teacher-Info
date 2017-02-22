@@ -72,7 +72,7 @@ if ($step == 0) {
 	$useoldlist = array();
 	if ($_POST["teachertype"] == "useold") {
 		$_POST["teachertype"] = $old["teacher_type"];
-		$useoldlist[]= "教師類別";
+		$useoldlist[]= "教師分類";
 	}
 	if (isset($_POST["old_phone"])) {
 		$phone = $old["phone"];
@@ -227,7 +227,7 @@ if ($step == 0) {
 			</div>
 		</div>
 		<div class="row">
-			<label class="col-sm-3 col-md-2 form-control-label" for="schoolid2"><i class="fa fa-bookmark itemicon" aria-hidden="true"></i> 教師類別</label>
+			<label class="col-sm-3 col-md-2 form-control-label" for="schoolid2"><i class="fa fa-bookmark itemicon" aria-hidden="true"></i> 教師分類</label>
 			<div class="col-sm-9 col-md-10 form-inline">
 				<select name="teachertype" id="teachertype" class="form-control" required>
 					<option hidden value="">請選取</option>

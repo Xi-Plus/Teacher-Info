@@ -66,7 +66,7 @@ if ($_GET["action"] === "login") {
 		setcookie($C["cookiename"], "", time(), $C["path"]);
 	}
 	?>
-	<div class="alert alert-info alert-dismissible" role="alert">
+	<div class="alert alert-success alert-dismissible" role="alert">
 		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 		已登出
 	</div>

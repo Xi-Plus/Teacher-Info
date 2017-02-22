@@ -8,7 +8,7 @@ require("func/emailtype.php");
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-<title><?=$C["titlename"]?>/管理電子報</title>
+<title><?=$C["titlename"]?>/管理電子報分類</title>
 
 <style type="text/css">
 body {
@@ -68,13 +68,13 @@ require("func/emailtype.php");
 if ($showform) {
 ?>
 <div class="container">
-	<h2>管理電子報類別</h2>
+	<h2>管理電子報分類</h2>
 	<form action="" method="post">
 		<div class="table-responsive">
 			<table class="table">
 				<tr>
 					<th>編號</th>
-					<th>電子報類別</th>
+					<th>電子報分類</th>
 					<th>使用中</th>
 				</tr>
 				<?php
@@ -97,11 +97,11 @@ if ($showform) {
 	<h3>新增/修改</h3>
 	<form action="" method="post">
 		<div class="row">
-			<label class="col-sm-2 form-control-label"><i class="fa fa-header itemicon" aria-hidden="true"></i> 電子報類別</label>
+			<label class="col-sm-2 form-control-label"><i class="fa fa-header itemicon" aria-hidden="true"></i> 電子報分類</label>
 			<div class="col-sm-10">
 				<select class="form-control" name="emailtype" required>
 					<option value="" hidden>請選取</option>
-					<option value="new">+ 新增電子報類別</option>
+					<option value="new">+ 新增電子報分類</option>
 					<?php
 					foreach ($D['emailtypeall'] as $id => $type) {
 						?>

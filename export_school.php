@@ -53,7 +53,7 @@ if (!$U["islogin"]) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-<title><?=$C["titlename"]?>/學校資料</title>
+<title><?=$C["titlename"]?>/匯出學校資料</title>
 
 <style type="text/css">
 body {
@@ -67,7 +67,7 @@ require("header.php");
 if ($showform) {
 ?>
 <div class="container-fluid">
-	<h2>學校資料</h2>
+	<h2>匯出學校資料</h2>
 	<form action="" method="post">
 		<button class="btn btn-default" type="submit" name="view"><i class="fa fa-eye" aria-hidden="true"></i> 檢視</button>
 		<button class="btn btn-success" type="submit" name="download"><i class="fa fa-download" aria-hidden="true"></i> 下載</button>

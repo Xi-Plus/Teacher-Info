@@ -27,8 +27,8 @@
 				<a class="nav-link dropdown-toggle" href="#" id="manage" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="fa fa-pencil" aria-hidden="true"></i> 管理</a>
 				<div class="dropdown-menu" aria-labelledby="manage">
 					<a class="dropdown-item" href="<?=$C["path"]?>/manage/schoollist/"><i class="fa fa-graduation-cap" aria-hidden="true"></i> 學校列表</a>
-					<a class="dropdown-item" href="<?=$C["path"]?>/manage/teachertype/"><i class="fa fa-user" aria-hidden="true"></i> 教師類別</a>
-					<a class="dropdown-item" href="<?=$C["path"]?>/manage/emailtype/"><i class="fa fa-envelope" aria-hidden="true"></i> 電子報類別</a>
+					<a class="dropdown-item" href="<?=$C["path"]?>/manage/teachertype/"><i class="fa fa-user" aria-hidden="true"></i> 教師分類</a>
+					<a class="dropdown-item" href="<?=$C["path"]?>/manage/emailtype/"><i class="fa fa-envelope" aria-hidden="true"></i> 電子報分類</a>
 					<a class="dropdown-item" href="<?=$C["path"]?>/manage/account/"><i class="fa fa-user" aria-hidden="true"></i> 帳號</a>
 				</div>
 			</li>

@@ -74,7 +74,7 @@ if ($showform) {
 			<table class="table">
 				<tr>
 					<th>編號</th>
-					<th>教師類別</th>
+					<th>教師分類</th>
 					<th>使用中</th>
 				</tr>
 				<?php
@@ -97,11 +97,11 @@ if ($showform) {
 	<h3>新增/修改</h3>
 	<form action="" method="post">
 		<div class="row">
-			<label class="col-sm-2 form-control-label"><i class="fa fa-header itemicon" aria-hidden="true"></i> 教師類別</label>
+			<label class="col-sm-2 form-control-label"><i class="fa fa-header itemicon" aria-hidden="true"></i> 教師分類</label>
 			<div class="col-sm-10">
 				<select class="form-control" name="teachertype" required>
 					<option value="" hidden>請選取</option>
-					<option value="new">+ 新增教師類別</option>
+					<option value="new">+ 新增教師分類</option>
 					<?php
 					foreach ($D['teachertypeall'] as $id => $type) {
 						?>
