@@ -51,6 +51,7 @@ CREATE TABLE `teacher_data` (
   `year` smallint(6) NOT NULL,
   `confirm` tinyint(1) NOT NULL DEFAULT '0',
   `updatetime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `ip` varchar(45) NOT NULL,
   `hash` varchar(32) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
