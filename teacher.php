@@ -261,9 +261,9 @@ if ($step == 0) {
 					<?php
 				}
 				?>
-				<input type="text" class="form-control" name="phone1" id="phone1" size="4" maxlength="3" placeholder="區碼" autocomplete="off">-
-				<input type="text" class="form-control" name="phone2" id="phone2" size="8" maxlength="8" placeholder="號碼" autocomplete="off">#
-				<input type="text" class="form-control" name="phone3" id="phone3" size="4" maxlength="3" placeholder="分機" autocomplete="off">
+				<input type="number" class="form-control" name="phone1" id="phone1" size="4" maxlength="3" placeholder="區碼" autocomplete="off">-
+				<input type="number" class="form-control" name="phone2" id="phone2" size="8" maxlength="8" placeholder="號碼" autocomplete="off">#
+				<input type="number" class="form-control" name="phone3" id="phone3" size="4" maxlength="3" placeholder="分機" autocomplete="off">
 			</div>
 		</div>
 		<div class="row">
@@ -279,7 +279,7 @@ if ($step == 0) {
 					<?php
 				}
 				?>
-				<input type="text" class="form-control" name="mobile" id="mobile" size="15" maxlength="15" placeholder="手機" autocomplete="tel">
+				<input type="number" class="form-control" name="mobile" id="mobile" size="15" maxlength="15" placeholder="手機" autocomplete="tel">
 			</div>
 		</div>
 		<div class="row">
