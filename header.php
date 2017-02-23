@@ -38,7 +38,7 @@
 				<?php
 				if ($U["islogin"]) {
 					?>
-					<a class="nav-link" href="<?=$C["path"]?>/logout/"><?=$U["data"]["account"]?> / <?=$U["data"]["name"]?> <i class="fa fa-sign-out" aria-hidden="true"></i> 登出</a>
+					<a class="nav-link" href="<?=$C["path"]?>/logout/"><?=htmlentities($U["data"]["account"])?> / <?=htmlentities($U["data"]["name"])?> <i class="fa fa-sign-out" aria-hidden="true"></i> 登出</a>
 					<?php
 				} else {
 					?>
