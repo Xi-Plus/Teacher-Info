@@ -88,13 +88,13 @@ if ($showform) {
 			foreach ($D['school_list'] as $schoolid => $school) {
 				?>
 				<tr>
-					<td><?=$school["name"]?></td>
+					<td><?=htmlentities($school["name"])?></td>
 					<?php
 					if (isset($school["data"])) {
 						?>
 						<td><?php
 						foreach (json_decode($school["data"]["teacher_count"]) as $id => $cnt) {
-							echo $D['teachertypeall'][$id]["name"]."：".$cnt." ";
+							echo htmlentities($D['teachertypeall'][$id]["name"])."：".$cnt." ";
 						}
 						?></td>
 						<td><?=$school["data"]["year"]?></td>

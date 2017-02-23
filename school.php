@@ -101,7 +101,7 @@ function filter(){
 					$schools = $sth->fetchAll(PDO::FETCH_ASSOC);
 					foreach ($schools as $school) {
 						?>
-						<option value="<?=$school['id']?>"><?=$school['name']?></option>
+						<option value="<?=$school['id']?>"><?=htmlentities($school['name'])?></option>
 						<?php
 					}
 					?>
@@ -129,7 +129,7 @@ function filter(){
 		<div class="row">
 			<label class="col-sm-3 col-md-2 form-control-label"><i class="fa fa-graduation-cap itemicon" aria-hidden="true"></i> 學校</label>
 			<label class="col-sm-9 col-md-10 form-control-label">
-				<?=$school["id"]?> <?=$school["name"]?>
+				<?=$school["id"]?> <?=htmlentities($school["name"])?>
 			</label>
 		</div>
 		<div class="row">
@@ -147,7 +147,7 @@ function filter(){
 					foreach ($D['teachertype'] as $id => $teachertype) {
 						?>
 						<div class="col-sm-6 col-md-4">
-							<?=$teachertype["name"]?>：<br>
+							<?=htmlentities($teachertype["name"])?>：<br>
 							<input type="number" class="form-control" name="teachercnt[<?=$id?>]" min="0" required>
 						</div>
 						<?php

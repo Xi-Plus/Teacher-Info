@@ -35,7 +35,7 @@ if (!$U["islogin"]) {
 	?>
 	<div class="alert alert-success alert-dismissible" role="alert">
 		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		已將 <?=$D['teachertypeall'][$_POST["inuse"]]["name"]?> <?=$G["inuse"][$D['teachertypeall'][$_POST["inuse"]]["inuse"]]?>
+		已將 <?=htmlentities($D['teachertypeall'][$_POST["inuse"]]["name"])?> <?=$G["inuse"][$D['teachertypeall'][$_POST["inuse"]]["inuse"]]?>
 	</div>
 	<?php
 } else if (isset($_POST["edit"])) {
@@ -46,7 +46,7 @@ if (!$U["islogin"]) {
 		?>
 		<div class="alert alert-success alert-dismissible" role="alert">
 			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			已新增 <?=$_POST["name"]?>
+			已新增 <?=htmlentities($_POST["name"])?>
 		</div>
 		<?php
 	} else {
@@ -57,7 +57,7 @@ if (!$U["islogin"]) {
 		?>
 		<div class="alert alert-success alert-dismissible" role="alert">
 			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			已修改為 <?=$_POST["name"]?>
+			已修改為 <?=htmlentities($_POST["name"])?>
 		</div>
 		<?php
 	}
@@ -82,7 +82,7 @@ if ($showform) {
 					?>
 					<tr>
 						<td><?=$id?></td>
-						<td><?=$type["name"]?></td>
+						<td><?=htmlentities($type["name"])?></td>
 						<td>
 							<?=$G["inuse"][$type["inuse"]]?>
 							<button type="submit" name="inuse" value="<?=$id?>" class="btn btn-default btn-sm"><i class="fa fa-eye<?=($type["inuse"]?"-slash":"")?>" aria-hidden="true"></i> <?=$G["inuse"][1-$type["inuse"]]?></button>
@@ -105,7 +105,7 @@ if ($showform) {
 					<?php
 					foreach ($D['teachertypeall'] as $id => $type) {
 						?>
-						<option value="<?=$id?>"><?=$type["name"]?></option>
+						<option value="<?=$id?>"><?=htmlentities($type["name"])?></option>
 						<?php
 					}
 					?>

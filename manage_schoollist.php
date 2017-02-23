@@ -235,7 +235,7 @@ if ($showform) {
 								<td><?=$schoolid?></td>
 								<td><?php
 								if ($D["school_list"][$schoolid]["name"] != $school["name"]) {
-									echo "<s>".$D["school_list"][$schoolid]["name"]."</s>→".$school["name"];
+									echo "<s>".htmlentities($D["school_list"][$schoolid]["name"])."</s>→".htmlentities($school["name"]);
 								}
 								?></td>
 								<td><?php
@@ -254,7 +254,7 @@ if ($showform) {
 								<input type="hidden" name="inuse[<?=$schoolid?>]" value="<?=$school["inuse"]?>">
 								<td>新增</td>
 								<td><?=$schoolid?></td>
-								<td><?=$school["name"]?></td>
+								<td><?=htmlentities($school["name"])?></td>
 								<td><?=$G["inuse"][$school["inuse"]]?></td>
 							</tr>
 							<?php

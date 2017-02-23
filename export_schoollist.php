@@ -65,7 +65,7 @@ require("header.php");
 				?>
 				<tr>
 					<td><?=$school["id"]?></td>
-					<td><?=$school["name"]?></td>
+					<td><?=htmlentities($school["name"])?></td>
 					<td><?=$G["inuse"][$school["inuse"]]?></td>
 				</tr>
 				<?php

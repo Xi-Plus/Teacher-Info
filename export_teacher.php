@@ -83,7 +83,7 @@ if ($showform) {
 			<?php
 			foreach ($D['school_list'] as $school) {
 				?>
-				<option value="<?=$school["id"]?>" <?=($schoolid==$school["id"]?"selected":"")?>><?=$school["name"]?></option>
+				<option value="<?=$school["id"]?>" <?=($schoolid==$school["id"]?"selected":"")?>><?=htmlentities($school["name"])?></option>
 				<?php
 			}
 			?>
@@ -112,15 +112,15 @@ if ($showform) {
 			foreach ($row as $data) {
 				?>
 				<tr>
-					<td><?=$D['school_list'][$data["school_id"]]["name"]?></td>
-					<td><?=$data["name"]?></td>
-					<td><?=$D['teachertypeall'][$data["teacher_type"]]["name"]?></td>
+					<td><?=htmlentities($D['school_list'][$data["school_id"]]["name"])?></td>
+					<td><?=htmlentities($data["name"])?></td>
+					<td><?=htmlentities($D['teachertypeall'][$data["teacher_type"]]["name"])?></td>
 					<td><?=$data["phone"]?></td>
 					<td><?=$data["mobile"]?></td>
-					<td><?=$data["email"]?></td>
+					<td><?=htmlentities($data["email"])?></td>
 					<td><?php
 					foreach (json_decode($data["email_type"]) as $id) {
-						echo $D['emailtypeall'][$id]["name"]." ";
+						echo htmlentities($D['emailtypeall'][$id]["name"])." ";
 					}
 					?></td>
 					<td><?=$data["year"]?></td>

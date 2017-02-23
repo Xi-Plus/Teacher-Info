@@ -116,7 +116,7 @@ if ($step == 0) {
 		?>
 		<div class="alert alert-info alert-dismissible" role="alert">
 			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			以下不修改：<?=implode("、", $useoldlist)?>
+			以下不修改：<?=htmlentities(implode("、", $useoldlist))?>
 		</div>
 		<?php
 	}
@@ -185,7 +185,7 @@ if ($step == 0) {
 					$schools = $sth->fetchAll(PDO::FETCH_ASSOC);
 					foreach ($schools as $school) {
 						?>
-						<option value="<?=$school['id']?>"><?=$school['name']?></option>
+						<option value="<?=$school['id']?>"><?=htmlentities($school['name'])?></option>
 						<?php
 					}
 					?>
@@ -212,14 +212,14 @@ if ($step == 0) {
 		<div class="row">
 			<label class="col-sm-3 col-md-2 form-control-label"><i class="fa fa-graduation-cap itemicon" aria-hidden="true"></i> 學校</label>
 			<label class="col-sm-9 col-md-10 form-control-label">
-				<?=$school["name"]?>
+				<?=htmlentities($school["name"])?>
 			</label>
 			<input type="hidden" name="schoolid" value="<?=$schoolid?>">
 		</div>
 		<div class="row">
 			<label class="col-sm-3 col-md-2 form-control-label"><i class="fa fa-user itemicon" aria-hidden="true"></i> 教師姓名</label>
 			<label class="col-sm-9 col-md-10 form-control-label">
-				<?=$_POST["teachername"]?>
+				<?=htmlentities($_POST["teachername"])?>
 			</label>
 			<input type="hidden" name="teachername" value="<?=$_POST["teachername"]?>">
 		</div>
@@ -244,7 +244,7 @@ if ($step == 0) {
 					<?php
 					foreach ($D['teachertype'] as $id => $teachertype) {
 						?>
-						<option value="<?=$id?>"><?=$teachertype["name"]?></option>
+						<option value="<?=$id?>"><?=htmlentities($teachertype["name"])?></option>
 						<?php
 					}
 					?>
