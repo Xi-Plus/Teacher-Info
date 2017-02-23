@@ -25,6 +25,11 @@ body {
 	padding-top: 4.5rem;
 }
 </style>
+<?php
+if ($C["CAPTCHAuseteacher"]) {
+	?><script src='https://www.google.com/recaptcha/api.js'></script><?php
+}
+?>
 </head>
 <body>
 <?php
@@ -56,112 +61,134 @@ if ($step == 0) {
 		$step++;
 	}
 } else if ($step == 2) {
-	$hash = md5(uniqid(rand(),true));
-	$phone = "";
-	if ($_POST["phone1"] !== "" && $_POST["phone2"] !== "") {
-		$phone .= $_POST["phone1"]."-".$_POST["phone2"];
-		if ($_POST["phone3"] !== "") {
-			$phone .= "#".$_POST["phone3"];
-		}
+	$captcha = true;
+	if ($C["CAPTCHAuseteacher"]) {
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, "https://www.google.com/recaptcha/api/siteverify");
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query( array( "secret"=>$C["CAPTCHAsecretkey"], "response"=>$_POST['g-recaptcha-response']) ));
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		$result = curl_exec($ch);
+		curl_close($ch);
+		$result = json_decode($result, true);
+		$captcha = $result["success"];
 	}
-	$sth = $G["db"]->prepare("SELECT *  FROM `teacher_data` WHERE `school_id` = :school_id AND `name` = :name ORDER BY `updatetime` DESC LIMIT 1");
-	$sth->bindValue(":school_id", $schoolid);
-	$sth->bindValue(":name", $_POST["teachername"]);
-	$sth->execute();
-	$old = $sth->fetch(PDO::FETCH_ASSOC);
-	$useoldlist = array();
-	if ($_POST["teachertype"] == "useold") {
-		$_POST["teachertype"] = $old["teacher_type"];
-		$useoldlist[]= "教師分類";
-	}
-	if (isset($_POST["old_phone"])) {
-		$phone = $old["phone"];
-		$useoldlist[]= "電話";
-	}
-	if (isset($_POST["old_mobile"])) {
-		$_POST["mobile"] = $old["mobile"];
-		$useoldlist[]= "手機";
-	}
-	if (isset($_POST["old_email"])) {
-		$_POST["email"] = $old["email"];
-		$useoldlist[]= "Email";
-	}
-	if (isset($_POST["old_emailtype"])) {
-		$_POST["emailtype"] = $old["email_type"];
-		$useoldlist[]= "電子報";
-	} else {
-		$_POST["emailtype"] = json_encode($_POST["emailtype"] ?? array());
-	}
-	require("func/ip.php");
-	$sth = $G["db"]->prepare("INSERT INTO `teacher_data` (`school_id`, `name`, `teacher_type`, `phone`, `mobile`, `email`, `email_type`, `year`, `ip`, `hash`) VALUES (:school_id, :name, :teacher_type, :phone, :mobile, :email, :email_type, :year, :ip, :hash)");
-	$sth->bindValue(":school_id", $_POST["schoolid"]);
-	$sth->bindValue(":name", $_POST["teachername"]);
-	$sth->bindValue(":teacher_type", $_POST["teachertype"]);
-	$sth->bindValue(":phone", $phone);
-	$sth->bindValue(":mobile", $_POST["mobile"]);
-	$sth->bindValue(":email", $_POST["email"]);
-	$sth->bindValue(":email_type", $_POST["emailtype"]);
-	$sth->bindValue(":year", $_POST["schoolyear"]);
-	$sth->bindValue(":ip", $U["ip"]);
-	$sth->bindValue(":hash", $hash);
-	$sth->execute();
-	$step++;
-	?>
-	<div class="alert alert-success alert-dismissible" role="alert">
-		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		已收到資料
-	</div>
-	<?php
-	if (count($useoldlist)) {
+	if (!$captcha) {
+		$step++;
 		?>
-		<div class="alert alert-info alert-dismissible" role="alert">
+		<div class="alert alert-danger alert-dismissible" role="alert">
 			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			以下不修改：<?=htmlentities(implode("、", $useoldlist))?>
+			驗證碼失敗，<a href="" onclick="history.back()">回上一頁</a>
 		</div>
 		<?php
-	}
-	if ($_POST["email"] !== "") {
-		$mail = array(
-			"sitename"=>$C["sitename"],
-			"url"=>$C["domain"].$C["path"],
-			"school"=>$D['school_list'][$_POST["schoolid"]]["name"],
-			"name"=>$_POST["teachername"],
-			"teachertype"=>$D['teachertypeall'][$_POST["teachertype"]]["name"],
-			"phone"=>$phone,
-			"mobile"=>$_POST["mobile"],
-			"email"=>$_POST["email"],
-			"emailtype"=>"",
-			"year"=>$_POST["schoolyear"],
-			"updatetime"=>date("Y-m-d H:i:s"),
-			"ip"=>$U["ip"],
-			"hash"=>$hash
-		);
-		foreach (json_decode($_POST["emailtype"], true) as $id) {
-			$mail["emailtype"] .= $D['emailtypeall'][$id]["name"]." ";
+	} else {
+		$hash = md5(uniqid(rand(),true));
+		$phone = "";
+		if ($_POST["phone1"] !== "" && $_POST["phone2"] !== "") {
+			$phone .= $_POST["phone1"]."-".$_POST["phone2"];
+			if ($_POST["phone3"] !== "") {
+				$phone .= "#".$_POST["phone3"];
+			}
 		}
-		ob_start();
-		require("mail.html");
-		$mailtext = ob_get_contents();
-		ob_end_clean();
-		$subject = $C["sitename"]." 確認信";
-		$headers = "MIME-Version: 1.0\r\n".
-					"Content-type: text/html; charset=UTF-8\r\n".
-					"From: ".$C["mail"];
-		$mail_sent = mail($mail["email"], $subject, $mailtext, $headers);
-		if ($mail_sent) {
+		$sth = $G["db"]->prepare("SELECT *  FROM `teacher_data` WHERE `school_id` = :school_id AND `name` = :name ORDER BY `updatetime` DESC LIMIT 1");
+		$sth->bindValue(":school_id", $schoolid);
+		$sth->bindValue(":name", $_POST["teachername"]);
+		$sth->execute();
+		$old = $sth->fetch(PDO::FETCH_ASSOC);
+		$useoldlist = array();
+		if ($_POST["teachertype"] == "useold") {
+			$_POST["teachertype"] = $old["teacher_type"];
+			$useoldlist[]= "教師分類";
+		}
+		if (isset($_POST["old_phone"])) {
+			$phone = $old["phone"];
+			$useoldlist[]= "電話";
+		}
+		if (isset($_POST["old_mobile"])) {
+			$_POST["mobile"] = $old["mobile"];
+			$useoldlist[]= "手機";
+		}
+		if (isset($_POST["old_email"])) {
+			$_POST["email"] = $old["email"];
+			$useoldlist[]= "Email";
+		}
+		if (isset($_POST["old_emailtype"])) {
+			$_POST["emailtype"] = $old["email_type"];
+			$useoldlist[]= "電子報";
+		} else {
+			$_POST["emailtype"] = json_encode($_POST["emailtype"] ?? array());
+		}
+		require("func/ip.php");
+		$sth = $G["db"]->prepare("INSERT INTO `teacher_data` (`school_id`, `name`, `teacher_type`, `phone`, `mobile`, `email`, `email_type`, `year`, `ip`, `hash`) VALUES (:school_id, :name, :teacher_type, :phone, :mobile, :email, :email_type, :year, :ip, :hash)");
+		$sth->bindValue(":school_id", $_POST["schoolid"]);
+		$sth->bindValue(":name", $_POST["teachername"]);
+		$sth->bindValue(":teacher_type", $_POST["teachertype"]);
+		$sth->bindValue(":phone", $phone);
+		$sth->bindValue(":mobile", $_POST["mobile"]);
+		$sth->bindValue(":email", $_POST["email"]);
+		$sth->bindValue(":email_type", $_POST["emailtype"]);
+		$sth->bindValue(":year", $_POST["schoolyear"]);
+		$sth->bindValue(":ip", $U["ip"]);
+		$sth->bindValue(":hash", $hash);
+		$sth->execute();
+		$step++;
+		?>
+		<div class="alert alert-success alert-dismissible" role="alert">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			已收到資料
+		</div>
+		<?php
+		if (count($useoldlist)) {
 			?>
 			<div class="alert alert-info alert-dismissible" role="alert">
 				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				已發送確認信
+				以下不修改：<?=htmlentities(implode("、", $useoldlist))?>
 			</div>
 			<?php
-		} else {
-			?>
-			<div class="alert alert-warning alert-dismissible" role="alert">
-				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				確認信發送失敗
-			</div>
-			<?php
+		}
+		if ($_POST["email"] !== "") {
+			$mail = array(
+				"sitename"=>$C["sitename"],
+				"url"=>$C["domain"].$C["path"],
+				"school"=>$D['school_list'][$_POST["schoolid"]]["name"],
+				"name"=>$_POST["teachername"],
+				"teachertype"=>$D['teachertypeall'][$_POST["teachertype"]]["name"],
+				"phone"=>$phone,
+				"mobile"=>$_POST["mobile"],
+				"email"=>$_POST["email"],
+				"emailtype"=>"",
+				"year"=>$_POST["schoolyear"],
+				"updatetime"=>date("Y-m-d H:i:s"),
+				"ip"=>$U["ip"],
+				"hash"=>$hash
+			);
+			foreach (json_decode($_POST["emailtype"], true) as $id) {
+				$mail["emailtype"] .= $D['emailtypeall'][$id]["name"]." ";
+			}
+			ob_start();
+			require("mail.html");
+			$mailtext = ob_get_contents();
+			ob_end_clean();
+			$subject = $C["sitename"]." 確認信";
+			$headers = "MIME-Version: 1.0\r\n".
+						"Content-type: text/html; charset=UTF-8\r\n".
+						"From: ".$C["mail"];
+			$mail_sent = mail($mail["email"], $subject, $mailtext, $headers);
+			if ($mail_sent) {
+				?>
+				<div class="alert alert-info alert-dismissible" role="alert">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					已發送確認信
+				</div>
+				<?php
+			} else {
+				?>
+				<div class="alert alert-warning alert-dismissible" role="alert">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					確認信發送失敗
+				</div>
+				<?php
+			}
 		}
 	}
 }
@@ -325,9 +352,29 @@ if ($step == 0) {
 				</div>
 			</div>
 		</div>
+		<?php
+		if ($C["CAPTCHAuseteacher"]) {
+			?>
+			<div class="row">
+				<label class="col-sm-2 form-control-label"><i class="fa fa-hashtag" aria-hidden="true"></i> 驗證碼</label>
+				<div class="col-sm-10">
+					<div class="g-recaptcha" data-callback="capchaok" data-expired-callback="capchaexpire" data-sitekey="<?=$C["CAPTCHAsitekey"]?>"></div>
+				</div>
+			</div>
+			<script type="text/javascript">
+				function capchaok(){
+					action.disabled = false;
+				}
+				function capchaexpire(){
+					action.disabled = true;
+				}
+			</script>
+			<?php
+		}
+		?>
 		<div class="row">
 			<div class="col-sm-9 offset-sm-3 col-md-10 offset-md-2">
-				<button type="submit" class="btn btn-success"><i class="fa fa-check" aria-hidden="true"></i> 送出</button>
+				<button type="submit" id="action" class="btn btn-success" disabled><i class="fa fa-check" aria-hidden="true"></i> 送出</button>
 			</div>
 		</div>
 	</form>

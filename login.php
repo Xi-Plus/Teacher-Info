@@ -14,6 +14,11 @@ body {
 	padding-top: 4.5rem;
 }
 </style>
+<?php
+if ($C["CAPTCHAuselogin"]) {
+	?><script src='https://www.google.com/recaptcha/api.js'></script><?php
+}
+?>
 </head>
 <body>
 <?php
@@ -29,11 +34,23 @@ if ($_GET["action"] === "login") {
 		<?php
 		$showform = false;
 	} else if (isset($_POST["account"])) {
+		$captcha = true;
+		if ($C["CAPTCHAuselogin"]) {
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, "https://www.google.com/recaptcha/api/siteverify");
+			curl_setopt($ch, CURLOPT_POST, true);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query( array( "secret"=>$C["CAPTCHAsecretkey"], "response"=>$_POST['g-recaptcha-response']) ));
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			$result = curl_exec($ch);
+			curl_close($ch);
+			$result = json_decode($result, true);
+			$captcha = $result["success"];
+		}
 		$sth = $G["db"]->prepare('SELECT * FROM `account` WHERE `account` = :account');
 		$sth->bindValue(":account", $_POST["account"]);
 		$sth->execute();
 		$account = $sth->fetch(PDO::FETCH_ASSOC);
-		if ($account !== false && password_verify($_POST["password"], $account["password"])) {
+		if ($captcha && $account !== false && password_verify($_POST["password"], $account["password"])) {
 			$cookie = md5(uniqid(rand(),true));
 			$sth = $G["db"]->prepare('INSERT INTO `login_session` (`account`, `cookie`) VALUES (:account, :cookie)');
 			$sth->bindValue(":account", $_POST["account"]);
@@ -53,7 +70,7 @@ if ($_GET["action"] === "login") {
 			?>
 			<div class="alert alert-danger alert-dismissible" role="alert">
 				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				登入失敗
+				登入失敗，<?=($captcha?"帳號或密碼錯誤":"驗證碼失敗")?>
 			</div>
 			<?php
 		}
@@ -92,9 +109,29 @@ if ($showform) {
 				<input class="form-control" type="password" name="password" required>
 			</div>
 		</div>
+		<?php
+		if ($C["CAPTCHAuselogin"]) {
+			?>
+			<div class="row">
+				<label class="col-sm-2 form-control-label"><i class="fa fa-hashtag" aria-hidden="true"></i> 驗證碼</label>
+				<div class="col-sm-10">
+					<div class="g-recaptcha" data-callback="capchaok" data-expired-callback="capchaexpire" data-sitekey="<?=$C["CAPTCHAsitekey"]?>"></div>
+				</div>
+			</div>
+			<script type="text/javascript">
+				function capchaok(){
+					action.disabled = false;
+				}
+				function capchaexpire(){
+					action.disabled = true;
+				}
+			</script>
+			<?php
+		}
+		?>
 		<div class="row">
 			<div class="col-sm-10 offset-sm-2">
-				<button type="submit" class="btn btn-success" name="action" value="new"><i class="fa fa-sign-in" aria-hidden="true"></i> 登入</button>
+				<button type="submit" class="btn btn-success" id="action" name="action" value="new" disabled><i class="fa fa-sign-in" aria-hidden="true"></i> 登入</button>
 			</div>
 		</div>
 	</form>

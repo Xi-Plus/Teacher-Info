@@ -13,6 +13,12 @@ $C["DBname"] = 'dbname';
 $C["cookiename"] = 'teacherinfo';
 $C["cookieexpire"] = 86400*7;
 
+$C["CAPTCHAuselogin"] = false;
+$C["CAPTCHAuseschool"] = false;
+$C["CAPTCHAuseteacher"] = false;
+$C["CAPTCHAsitekey"] = '';
+$C["CAPTCHAsecretkey"] = '';
+
 $C["mail"] = 'no-reply@sp.tnfsh.tn.edu.tw';
 
 $C["ipserverkey"] = array("HTTP_CLIENT_IP", "HTTP_X_FORWARDED_FOR", "HTTP_X_FORWARDED", "HTTP_X_CLUSTER_CLIENT_IP", "HTTP_FORWARDED_FOR", "HTTP_FORWARDED", "REMOTE_ADDR", "HTTP_VIA");

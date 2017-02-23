@@ -22,6 +22,11 @@ body {
 	padding-top: 4.5rem;
 }
 </style>
+<?php
+if ($C["CAPTCHAuseschool"]) {
+	?><script src='https://www.google.com/recaptcha/api.js'></script><?php
+}
+?>
 </head>
 <body>
 <?php
@@ -48,20 +53,42 @@ if ($step == 0) {
 		$step++;
 	}
 } else if ($step == 2) {
-	$hash = md5(uniqid(rand(),true));
-	$sth = $G["db"]->prepare("INSERT INTO `school_data` (`id`, `teacher_count`, `year`, `hash`) VALUES (:id, :teacher_count, :year, :hash);");
-	$sth->bindValue(":id", $schoolid);
-	$sth->bindValue(":teacher_count", json_encode($_POST["teachercnt"], JSON_NUMERIC_CHECK));
-	$sth->bindValue(":year", $_POST["schoolyear"]);
-	$sth->bindValue(":hash", $hash);
-	$sth->execute();
-	$step++;
-	?>
-	<div class="alert alert-success alert-dismissible" role="alert">
-		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		已收到資料
-	</div>
-	<?php
+	$captcha = true;
+	if ($C["CAPTCHAuseschool"]) {
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, "https://www.google.com/recaptcha/api/siteverify");
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query( array( "secret"=>$C["CAPTCHAsecretkey"], "response"=>$_POST['g-recaptcha-response']) ));
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		$result = curl_exec($ch);
+		curl_close($ch);
+		$result = json_decode($result, true);
+		$captcha = $result["success"];
+	}
+	if (!$captcha) {
+		$step++;
+		?>
+		<div class="alert alert-danger alert-dismissible" role="alert">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			驗證碼失敗，<a href="" onclick="history.back()">回上一頁</a>
+		</div>
+		<?php
+	} else {
+		$hash = md5(uniqid(rand(),true));
+		$sth = $G["db"]->prepare("INSERT INTO `school_data` (`id`, `teacher_count`, `year`, `hash`) VALUES (:id, :teacher_count, :year, :hash);");
+		$sth->bindValue(":id", $schoolid);
+		$sth->bindValue(":teacher_count", json_encode($_POST["teachercnt"], JSON_NUMERIC_CHECK));
+		$sth->bindValue(":year", $_POST["schoolyear"]);
+		$sth->bindValue(":hash", $hash);
+		$sth->execute();
+		$step++;
+		?>
+		<div class="alert alert-success alert-dismissible" role="alert">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			已收到資料
+		</div>
+		<?php
+	}
 }
 ?>
 <script type="text/javascript">
@@ -156,9 +183,29 @@ function filter(){
 				</div>
 			</div>
 		</div>
+		<?php
+		if ($C["CAPTCHAuseschool"]) {
+			?>
+			<div class="row">
+				<label class="col-sm-2 form-control-label"><i class="fa fa-hashtag" aria-hidden="true"></i> 驗證碼</label>
+				<div class="col-sm-10">
+					<div class="g-recaptcha" data-callback="capchaok" data-expired-callback="capchaexpire" data-sitekey="<?=$C["CAPTCHAsitekey"]?>"></div>
+				</div>
+			</div>
+			<script type="text/javascript">
+				function capchaok(){
+					action.disabled = false;
+				}
+				function capchaexpire(){
+					action.disabled = true;
+				}
+			</script>
+			<?php
+		}
+		?>
 		<div class="row">
 			<div class="col-sm-9 offset-sm-3 col-md-10 offset-md-2">
-				<button type="submit" class="btn btn-success"><i class="fa fa-check" aria-hidden="true"></i> 送出</button>
+				<button type="submit" id="action" class="btn btn-success" disabled><i class="fa fa-check" aria-hidden="true"></i> 送出</button>
 			</div>
 		</div>
 	</form>
