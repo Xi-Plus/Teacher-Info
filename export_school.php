@@ -26,23 +26,37 @@ if (!$U["islogin"]) {
 		header('Expires: 0');
 		header('Cache-Control: must-revalidate');
 		header('Pragma: public');
-		echo chr(239).chr(187).chr(191);
-		echo "學校名稱,教師人數,學年度,確認,更新時間\n";
+		$tmpfile = tmpfile();
+		fwrite($tmpfile, chr(239).chr(187).chr(191));
+		$arr = array("學校名稱", "教師人數", "學年度", "確認", "更新時間");
+		fputcsv($tmpfile, $arr);
 		foreach ($D['school_list'] as $schoolid => $school) {
-			echo $school["name"].",";
 			if (isset($school["data"])) {
+				$temp = array();
 				foreach (json_decode($school["data"]["teacher_count"]) as $id => $cnt) {
-					echo $D['teachertypeall'][$id]["name"]."：".$cnt." ";
+					$temp[]= $D['teachertypeall'][$id]["name"]."：".$cnt;
 				}
-				echo ",";
-				echo $school["data"]["year"].",";
-				echo $G["confirm"][$school["data"]["confirm"]].",";
-				echo $school["data"]["updatetime"];
+				$arr = array(
+					$school["name"],
+					implode(", ", $temp),
+					$school["data"]["year"],
+					$G["confirm"][$school["data"]["confirm"]],
+					$school["data"]["updatetime"]
+				);
 			} else {
-				echo "未填寫,,,";
+				$arr = array(
+					$school["name"],
+					"未填寫",
+					"",
+					"",
+					""
+				);
 			}
-			echo "\n";
+			fputcsv($tmpfile, $arr);
 		}
+		fseek($tmpfile, 0);
+		echo stream_get_contents($tmpfile);
+		fclose($tmpfile);
 		exit;
 	}
 }

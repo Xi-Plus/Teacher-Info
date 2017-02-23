@@ -33,24 +33,32 @@ if (!$U["islogin"]) {
 		header('Expires: 0');
 		header('Cache-Control: must-revalidate');
 		header('Pragma: public');
-		echo chr(239).chr(187).chr(191);
-		echo "學校名稱,姓名,教師類型,電話,手機,Email,電子報,學年度,確認,更新時間\n";
+		$tmpfile = tmpfile();
+		fwrite($tmpfile, chr(239).chr(187).chr(191));
+		$arr = array("學校名稱", "姓名", "教師類型", "電話", "手機", "Email", "電子報", "學年度", "確認", "更新時間");
+		fputcsv($tmpfile, $arr);
 		foreach ($row as $data) {
-			echo $D['school_list'][$data["school_id"]]["name"].",";
-			echo $data["name"].",";
-			echo $D['teachertypeall'][$data["teacher_type"]]["name"].",";
-			echo $data["phone"].",";
-			echo $data["mobile"].",";
-			echo $data["email"].",";
+			$temp = array();
 			foreach (json_decode($data["email_type"]) as $id) {
-				echo $D['emailtypeall'][$id]["name"]." ";
+				$temp[]= $D['emailtypeall'][$id]["name"];
 			}
-			echo ",";
-			echo $data["year"].",";
-			echo $G["confirm"][$data["confirm"]].",";
-			echo $data["updatetime"];
-			echo "\n";
+			$arr = array(
+				$D['school_list'][$data["school_id"]]["name"],
+				$data["name"],
+				$D['teachertypeall'][$data["teacher_type"]]["name"],
+				$data["phone"],
+				$data["mobile"],
+				$data["email"],
+				implode(", ", $temp),
+				$data["year"],
+				$G["confirm"][$data["confirm"]],
+				$data["updatetime"]
+			);
+			fputcsv($tmpfile, $arr);
 		}
+		fseek($tmpfile, 0);
+		echo stream_get_contents($tmpfile);
+		fclose($tmpfile);
 		exit;
 	}
 }

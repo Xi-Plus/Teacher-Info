@@ -8,20 +8,23 @@ if (isset($_POST["download"]) || isset($_POST["importable"])) {
 	header('Expires: 0');
 	header('Cache-Control: must-revalidate');
 	header('Pragma: public');
-	echo chr(239).chr(187).chr(191);
+	$tmpfile = tmpfile();
+	fwrite($tmpfile, chr(239).chr(187).chr(191));
 	if (isset($_POST["download"])) {
-		echo "學校編號,學校名稱,使用中\n";
+		$arr = array("學校編號", "學校名稱", "使用中");
+		fputcsv($tmpfile, $arr);
 	}
 	foreach ($D['school_list'] as $schoolid => $school) {
-		echo $school["id"].",";
-		echo $school["name"].",";
-		if (isset($_POST["download"])) {
-			echo $G["inuse"][$school["inuse"]];
-		} else {
-			echo $school["inuse"];
-		}
-		echo "\n";
+		$arr = array(
+			$school["id"],
+			$school["name"],
+			(isset($_POST["download"]) ? $G["inuse"][$school["inuse"]] : $school["inuse"])
+		);
+		fputcsv($tmpfile, $arr);
 	}
+	fseek($tmpfile, 0);
+	echo stream_get_contents($tmpfile);
+	fclose($tmpfile);
 	exit;
 }
 ?>
